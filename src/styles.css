@@ -1,1 +1,33 @@
 /* You can add global styles to this file, and also import other style files */
+body{
+    background-color: #434246;
+    color: #CFCABB;
+}
+
+.navbar-default{
+    background-color: #4E6877;
+    border-color: #3b4f5a;
+    color: #CFCABB;
+}
+
+.navbar-default .navbar-brand{
+    color: #CFCABB;
+}
+
+.navbar-default .navbar-nav>li>a{
+    color: #CFCABB;
+}
+
+.jumbotron{
+    background-color: #4E6877;
+    text-align: center;
+}
+
+.panel{
+    background-color: #4E6877;
+}
+
+.well{
+    background-color: #4E6877;
+    border-color: #3b4f5a;
+}
