@@ -1,20 +1,11 @@
-<div class="container">
-  <div class="row">
-    <div class="jumbotron">
-      <h2 class="center-block">!!Attention: Important things to come!!</h2>
-    </div>
+<div class="row">
+  <app-announcement></app-announcement>
+</div>
+<div class="row">
+  <div class="col-xs-6">
+    <app-personal></app-personal>
   </div>
-  <div class="row">
-    <div class="col-xs-6">
-      <div class="well">
-          <h4>Personal Saves</h4>
-      </div>
-    </div>
-    
-    <div class="col-xs-6">
-      <div class="well">
-        <h4>Trending Public Worlds</h4>
-      </div>
-    </div>
+  <div class="col-xs-6">
+    <router-outlet></router-outlet>
   </div>
 </div>
