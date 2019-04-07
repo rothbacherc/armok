@@ -8,6 +8,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AnnouncementComponent } from './dashboard/announcement/announcement.component';
 import { PersonalComponent } from './dashboard/personal/personal.component';
 import { PublicTrendingComponent } from './dashboard/public-trending/public-trending.component';
+import { SaveCollectionComponent } from './save-collection/save-collection.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { PublicTrendingComponent } from './dashboard/public-trending/public-tren
     DashboardComponent,
     AnnouncementComponent,
     PersonalComponent,
-    PublicTrendingComponent
+    PublicTrendingComponent,
+    SaveCollectionComponent
   ],
   imports: [
     BrowserModule,

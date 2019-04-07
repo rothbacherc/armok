@@ -1,33 +1,133 @@
 /* You can add global styles to this file, and also import other style files */
+html{
+    scrollbar-width: thin;
+    scrollbar-color: #acc8cc transparent;
+}
+/* The scrollbar-width and scrollbar-color classes
+target Firefox, this is one of three allowed values
+the first color is the "thumb" and the second color
+is for the track
+*/
+
 body{
-    background-color: #434246;
-    color: #CFCABB;
+    background-color: #2b2a2c;
+    color: #acc8cc;
 }
 
-.navbar-default{
-    background-color: #4E6877;
-    border-color: #3b4f5a;
-    color: #CFCABB;
+.test{
+    background-color: #3b3c3d;
 }
 
-.navbar-default .navbar-brand{
-    color: #CFCABB;
+::-webkit-scrollbar{
+    width: 10px;
+    background-color: transparent;
 }
 
-.navbar-default .navbar-nav>li>a{
-    color: #CFCABB;
+::-webkit-scrollbar-thumb{
+    background-color: #acc8cc;
+    border-radius: 10px;
+    border: 3px;
+    border-color: #323c42;
+}
+
+::-webkit-scrollbar-thumb:hover{
+    background-color: #819599;
+}
+
+::-webkit-scrollbar-track{
+    border-radius: 10px;
+}
+/*These -webkit-scrollbars do exactly what you expect */
+
+
+.navbar-inverse{
+    background-color: #323c42;
+    border-color: #26333a;
+    color: #acc8cc;
+}
+
+.navbar-inverse .navbar-brand{
+    color: #acc8cc;
+}
+
+.navbar-inverse .navbar-nav>li>a{
+    color: #acc8cc;
+}
+
+.navbar-inverse .navbar-nav>.open>a{
+    background-color: #222d33;
+    color: #e6fcff;
+}
+
+.navbar-inverse .navbar-nav>.open>a:hover{
+    background-color: #1a1f20;
+    color: #e6fcff;
+}
+
+.dropdown-menu{
+    background-color: #222d33;
+}
+
+.dropdown-menu {
+    background-color: #222d33;
+}
+
+.dropdown-menu>li>a{
+    color: #e6fcff;
+}
+
+.dropdown-menu>li>a:focus, .dropdown-menu>li>a:hover {
+    background-color: #1a1f20;
+    color:#e6fcff;
 }
 
 .jumbotron{
-    background-color: #4E6877;
+    background-color: #323c42;
     text-align: center;
 }
 
 .panel{
-    background-color: #4E6877;
+    background-color: #323c42;
+}
+
+.panel-default{
+    border-color: #202b31;
+}
+
+.panel-default>.panel-heading{
+    background-color: #222d33;
+    border-color: #222d33;
+    color: #e6fcff;
+    cursor: pointer;
+}
+
+.panel-default>.panel-heading:hover{
+    background-color: #212629;
+}
+
+.disableheading{
+    background-color: #2c2d2e;
+    color: #4f5052;
+}
+
+.panel-group .panel-heading+.panel-collapse>.list-group{
+    border-top: 1px solid #222d33
+}
+
+.list-group-item{
+    background-color: #374852;
+    border-color: #222d33;
+    cursor: pointer;
+}
+
+.list-group-item:hover{
+    background-color: #2e3c44;
 }
 
 .well{
-    background-color: #4E6877;
-    border-color: #3b4f5a;
+    background-color: #323c42;
+    border-color: #2b3438;
+    max-height: calc(90vh - 140px);
+    scrollbar-width: thin;
+    overflow: auto;
 }

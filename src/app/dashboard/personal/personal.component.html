@@ -1,45 +1,91 @@
 <div class="well">
-  <h4>Personal</h4>
+  <h4 style="text-align: center">Personal Saves</h4>
   <div class="panel-group">
     <div class="panel panel-default">
-      <div class="panel-heading">
+      <div class="panel-heading" (click)="toggleCollapse('s')" [ngStyle]="{
+                                                                'background-color': this.sbgStyle,
+                                                                'color': this.scStyle,
+                                                                'cursor': this.scS}">
         <h4 class="panel-title">
-          <a data-target="#worlds" data-toggle="collapse">Worlds</a>
+          Seeds
         </h4>
       </div>
-      <div id="worlds" class="panel-collapse collapse">
+      <div id="seeds" class="panel-collapse" [ngClass]="{collapse: this.sCollapse === true}">
         <ul class="list-group">
-          <li class="list-group-item">Earth</li>
-          <li class="list-group-item">Venus</li>
-          <li class="list-group-item">Mars</li>
+          <ng-container *ngFor="let seed of listSeeds">
+              <li class="list-group-item">
+                  <span style="display: inline-block"><h4>{{ seed.sName }}</h4>
+                  <p>Urist {{ seed.uName }}</p></span>
+                  <span class="pull-right" style="display: inline-block">
+                  <p>Downloads: {{ seed.downloads }}</p></span>
+                </li>
+          </ng-container>
         </ul>
       </div>
     </div>
     <div class="panel panel-default">
-      <div class="panel-heading">
+      <div class="panel-heading" (click)="toggleCollapse('w')" [ngStyle]="{
+                                                                'background-color': this.wbgStyle,
+                                                                'color': this.wcStyle,
+                                                                'cursor': this.wcS}">
         <h4 class="panel-title">
-          <a data-toggle="collapse" href="#forts">Forts</a>
+          Worlds
         </h4>
       </div>
-      <div id="forts" class="panel-collapse collapse">
+      <div id="worlds" class="panel-collapse" [ngClass]="{collapse: this.wCollapse === true}">
         <ul class="list-group">
-          <li class="list-group-item">Damali</li>
-          <li class="list-group-item">Black</li>
-          <li class="list-group-item">Redwall</li>
+          <ng-container *ngFor="let world of listWorlds">
+            <li class="list-group-item">
+              <span style="display: inline-block"><h4>{{ world.sName }}</h4>
+              <p>Urist {{ world.uName }}</p></span>
+              <span class="pull-right" style="display: inline-block">
+              <p>Downloads: {{ world.downloads }}</p></span>
+            </li>
+          </ng-container>
+        </ul>
+      </div>
+    </div>
+    <div class="panel panel-default"  [ngStyle]="{'border-color': this.fbgStyle}">
+      <div class="panel-heading" (click)="toggleCollapse('f')" [ngStyle]="{
+                                                                'background-color': this.fbgStyle,
+                                                                'color': this.fcStyle,
+                                                                'cursor': this.fcS}">
+        <h4 class="panel-title">
+          Forts
+        </h4>
+      </div>
+      <div id="forts" class="panel-collapse" [ngClass]="{collapse: this.fCollapse === true}">
+        <ul class="list-group">
+          <ng-container *ngFor="let fort of listForts">
+              <li class="list-group-item">
+                  <span style="display: inline-block"><h4>{{ fort.sName }}</h4>
+                  <p>Urist {{ fort.uName }}</p></span>
+                  <span class="pull-right" style="display: inline-block">
+                  <p>Downloads: {{ fort.downloads }}</p></span>
+                </li>
+          </ng-container>
         </ul>
       </div>
     </div>
     <div class="panel panel-default">
-      <div class="panel-heading">
+      <div class="panel-heading" (click)="toggleCollapse('c')" [ngStyle]="{
+                                                                'background-color': this.cbgStyle,
+                                                                'color': this.ccStyle,
+                                                                'cursor': this.ccS}">
         <h4 class="panel-title">
-          <a data-toggle="collapse" href="#characters">Characters</a>
+          Characters
         </h4>
       </div>
-      <div id="characters" class="panel-collapse collapse">
+      <div id="characters" class="panel-collapse" [ngClass]="{collapse: this.cCollapse === true}">
         <ul class="list-group">
-          <li class="list-group-item">Big Bird</li>
-          <li class="list-group-item">Legolas</li>
-          <li class="list-group-item">Lyra</li>
+          <ng-container *ngFor="let char of listChars">
+              <li class="list-group-item">
+                  <span style="display: inline-block"><h4>{{ char.sName }}</h4>
+                  <p>Urist {{ char.uName }}</p></span>
+                  <span class="pull-right" style="display: inline-block">
+                  <p>Downloads: {{ char.downloads }}</p></span>
+                </li>
+          </ng-container>
         </ul>
       </div>
     </div>

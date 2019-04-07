@@ -1,15 +1,18 @@
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-inverse">
     <div class="container-fluid">
-        <a routerLink="/" class="navbar-brand">Vault</a>
+        <a routerLink="/" class="navbar-brand">Armok's Vault</a>
         <div class="navbar-default">
             <ul class="nav navbar-nav">
                 <li><a href="#">Download</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="https://www.paypal.me/damay" target="_blank">Donate</a></li>
-                <li class="dropdown" appDropdown>
-                    <a class="dropdown-toggle" role="button" style="cursor: pointer">Account <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
+                <li class="dropdown" [ngClass]="{open: beOpen === true}" (mouseenter)="doOpen()" (mouseleave)="doOpen()">
+                    <a class="dropdown-toggle" role="button" style="cursor: pointer">
+                        Account 
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" style="cursor: pointer">
                         <li><a >Manage</a></li>
                         <li><a >Logout</a></li>
                     </ul>
