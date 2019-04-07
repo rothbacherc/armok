@@ -8,64 +8,40 @@ import { Save } from 'src/app/models/save.model';
   styleUrls: ['./personal.component.css']
 })
 export class PersonalComponent implements OnInit, DoCheck {
-  sCollapse = true
-  wCollapse = true
-  fCollapse = true
-  cCollapse = true
-  listWorlds: Save[]
-  listForts: Save[]
-  listChars: Save[]
-  listSeeds: Save[]
+  mySaves: Map<string, Save[]>
+  mapCollapse: Map<string, boolean> = new Map([
+    ['Seeds', true], ['Worlds', true], ['Forts', true], ['Characters', true]
+  ])
+  mapbgStyles: Map<string, string> = new Map([
+    ['Seeds', ''], ['Worlds', ''], ['Forts', ''], ['Characters', '']
+  ])
+  mapcStyles: Map<string, string> = new Map([
+    ['Seeds', ''], ['Worlds', ''], ['Forts', ''], ['Characters', '']
+  ])
+  mapcsStyles: Map<string, string> = new Map([
+    ['Seeds', ''], ['Worlds', ''], ['Forts', ''], ['Characters', '']
+  ])
   static ebgS = '#2c2d2e' //empty background style
   static ecS = '#4f5052' //empty color style
   static cS = 'auto' //cursor style
-  sbgStyle: string
-  scStyle: string
-  scS: string
-  wbgStyle: string
-  wcStyle: string
-  wcS: string
-  fbgStyle: string
-  fcStyle: string
-  fcS: string
-  cbgStyle: string
-  ccStyle: string
-  ccS: string
 
   constructor(private mySaveService: MySavesService) { }
 
   ngOnInit() {
-    this.listWorlds = this.mySaveService.getMyWorldSaves()
-    this.listSeeds = this.mySaveService.getMySeedSaves()
-    this.listForts = this.mySaveService.getMyFortSaves()
-    this.listChars = this.mySaveService.getMyCharacterSaves()
+    this.mySaves = this.mySaveService.getAllMySaves()
   }
 
-  ngDoCheck(){
-    if (this.listSeeds.length === 0){this.sbgStyle = PersonalComponent.ebgS; this.scStyle = PersonalComponent.ecS; this.scS = PersonalComponent.cS}
-    if (this.listWorlds.length === 0){this.wbgStyle = PersonalComponent.ebgS; this.wcStyle = PersonalComponent.ecS; this.wcS = PersonalComponent.cS}
-    if (this.listForts.length === 0){this.fbgStyle = PersonalComponent.ebgS; this.fcStyle = PersonalComponent.ecS; this.fcS = PersonalComponent.cS}
-    if (this.listChars.length === 0){this.cbgStyle = PersonalComponent.ebgS; this.ccStyle = PersonalComponent.ecS; this.ccS = PersonalComponent.cS}
+  ngDoCheck() {
+    this.hideIfEmpty('Seeds');this.hideIfEmpty('Worlds');this.hideIfEmpty('Forts');this.hideIfEmpty('Characters')
   }
 
-  toggleCollapse(elem){
-    switch(elem){
-      case 's': {
-        this.sCollapse = this.listSeeds.length > 0 ? !this.sCollapse : this.sCollapse
-        break
-      }
-      case 'w' : {
-        this.wCollapse = this.listWorlds.length > 0 ? !this.wCollapse : this.wCollapse
-        break
-      }
-      case 'f': {
-        this.fCollapse = this.listForts.length > 0 ? !this.fCollapse : this.fCollapse
-        break
-      }
-      case 'c': {
-        this.cCollapse = this.listChars.length > 0 ? !this.cCollapse : this.cCollapse
-        break
-      }
-    }
+  hideIfEmpty(elem: string) {
+        this.mapbgStyles.set(elem, this.mySaves.get(elem).length === 0 ? PersonalComponent.ebgS : '')
+        this.mapcStyles.set(elem, this.mySaves.get(elem).length === 0 ? PersonalComponent.ecS : '')
+        this.mapcsStyles.set(elem, this.mySaves.get(elem).length === 0 ? PersonalComponent.cS : '')
+  }
+
+  toggleCollapse(elem: string) {
+    this.mapCollapse.set(elem, this.mySaves.get(elem).length > 0 ? !this.mapCollapse.get(elem) : this.mapCollapse.get(elem))
   }
 }

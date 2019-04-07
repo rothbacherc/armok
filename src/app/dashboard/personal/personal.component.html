@@ -1,6 +1,33 @@
 <div class="well">
   <h4 style="text-align: center">Personal Saves</h4>
   <div class="panel-group">
+    <div class="panel panel-default" *ngFor="let saveList of mySaves.keys()">
+      <div class="panel-heading" (click)="toggleCollapse(saveList)" [ngStyle]="{
+                                                                  'background-color': this.mapbgStyles.get(saveList),
+                                                                  'color': this.mapcStyles.get(saveList),
+                                                                  'cursor': this.mapcsStyles.get(saveList)}">
+        <h4 class="panel-title">
+          {{ saveList }}
+        </h4>
+      </div>
+      <div id="seeds" class="panel-collapse" [ngClass]="{collapse: this.mapCollapse.get(saveList) === true}">
+        <ul class="list-group">
+          <ng-container *ngFor="let save of mySaves.get(saveList)">
+            <li class="list-group-item">
+              <span style="display: inline-block">
+                <h4>{{ save.sName }}</h4>
+                <p>Urist {{ save.uName }}</p>
+              </span>
+              <span class="pull-right" style="display: inline-block">
+                <p>Downloads: {{ save.downloads }}</p>
+              </span>
+            </li>
+          </ng-container>
+        </ul>
+      </div>
+    </div>
+    <!--
+  <div class="panel-group">
     <div class="panel panel-default">
       <div class="panel-heading" (click)="toggleCollapse('s')" [ngStyle]="{
                                                                 'background-color': this.sbgStyle,
@@ -90,4 +117,5 @@
       </div>
     </div>
   </div>
-</div>
+  -->
+  </div>
