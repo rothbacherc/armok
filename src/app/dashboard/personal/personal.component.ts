@@ -1,11 +1,12 @@
 import { Component, OnInit, DoCheck } from '@angular/core';
-import { MySavesService } from 'src/app/services/mysaves.service';
+import { trigger, state, style, transition, animate } from '@angular/animations';
+import { MySavesService } from 'src/app/services/my-saves.service';
 import { Save } from 'src/app/models/save.model';
 
 @Component({
   selector: 'app-personal',
   templateUrl: './personal.component.html',
-  styleUrls: ['./personal.component.css']
+  styleUrls: ['./personal.component.css'],
 })
 export class PersonalComponent implements OnInit, DoCheck {
   mySaves: Map<string, Save[]>
@@ -20,6 +21,9 @@ export class PersonalComponent implements OnInit, DoCheck {
   ])
   mapcsStyles: Map<string, string> = new Map([
     ['Seeds', ''], ['Worlds', ''], ['Forts', ''], ['Characters', '']
+  ])
+  mapStates: Map<string, string> = new Map([
+    ['Seeds', 'closed'], ['Worlds', 'closed'], ['Forts', 'closed'], ['Characters', 'closed']
   ])
   static ebgS = '#2c2d2e' //empty background style
   static ecS = '#4f5052' //empty color style

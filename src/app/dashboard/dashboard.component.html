@@ -8,7 +8,12 @@
   <div class="col-xs-6">
     <div class="well">
       <h4 style="text-align: center">Public Saves</h4>
-      <router-outlet></router-outlet>
+      <ul class="nav nav-tabs">
+          <li routerLinkActive="active"><a routerLink="trending">Trending</a></li>
+          <li routerLinkActive="active"><a routerLink="bloodline">Bloodline</a></li>
+          <li routerLinkActive="active"><a routerLink="all">All Shared</a></li>
+      </ul>
+          <router-outlet></router-outlet>
     </div>
   </div>
 </div>

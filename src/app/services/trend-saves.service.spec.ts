@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { MySavesService } from './mysaves.service';
+import { TrendSavesService } from './trend-saves.service';
 
-describe('SavesService', () => {
+describe('TrendSavesService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: MySavesService = TestBed.get(MySavesService);
+    const service: TrendSavesService = TestBed.get(TrendSavesService);
     expect(service).toBeTruthy();
   });
 });

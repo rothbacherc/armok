@@ -50,8 +50,17 @@ body{
     color: #acc8cc;
 }
 
+.navbar-inverse .navbar-brand:hover{
+    color: #e6fcff;
+}
+
 .navbar-inverse .navbar-nav>li>a{
     color: #acc8cc;
+}
+
+.navbar-inverse .navbar-nav>li>a:hover{
+    background-color: #1a1f20;
+    color: #e6fcff;
 }
 
 .navbar-inverse .navbar-nav>.open>a{
@@ -114,6 +123,8 @@ body{
     border-top: 1px solid #222d33
 }
 
+.notcollapse{}
+
 .list-group-item{
     background-color: #374852;
     border-color: #222d33;
@@ -122,6 +133,36 @@ body{
 
 .list-group-item:hover{
     background-color: #2e3c44;
+}
+
+.nav-tabs > li > a:hover{
+    background-color: #242b30;
+    border-color: #242b30;
+}
+
+.nav-tabs > li > a{
+    color: #e6fcff;
+    cursor: pointer;
+}
+
+.nav-tabs > li {
+    float:none;
+    display:inline-block;
+    zoom:1;
+}
+
+.nav-tabs {
+    background-color: #283035;
+    border-bottom-color: #283035;
+    color: #e6fcff;
+    text-align:center;
+}
+
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, 
+.nav-tabs>li.active>a:hover{
+    background-color: #1f2529;
+    border-color: #283035;
+    color: #e6fcff;
 }
 
 .well{
