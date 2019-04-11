@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
   beOpen = false
+  modalOpen = false
 
   constructor() { }
 
@@ -14,8 +15,12 @@ export class HeaderComponent implements OnInit {
   }
 
   doOpen(){
-    console.log('yep')
     this.beOpen = !this.beOpen
+  }
+
+  toggleModal(){
+    console.log("yep")
+    this.modalOpen = !this.modalOpen
   }
 
 }

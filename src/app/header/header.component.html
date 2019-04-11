@@ -15,10 +15,17 @@
                     </a>
                     <ul class="dropdown-menu" style="cursor: pointer">
                         <li><a >Manage</a></li>
-                        <li><a >Logout</a></li>
+                        <li><a (click)="toggleModal()">Login</a></li>
                     </ul>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
+<div class="modal" [ngClass]="{'modal-on': modalOpen}" (click)="toggleModal()">
+    
+</div>
+<div class="modal-content well" [ngClass]="{'modal-on': modalOpen}">
+    <h3>test</h3>
+    <button class="btn btn-primary" (click)="toggleModal()">close</button>
+</div>
