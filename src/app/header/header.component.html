@@ -1,31 +1,87 @@
 <nav class="navbar navbar-inverse">
     <div class="container-fluid">
-        <a routerLink="/" class="navbar-brand">Armok's Vault</a>
-        <div class="navbar-default">
+        <div class="navbar-header">
+            <a routerLink="/" class="navbar-brand">Armok's Vault</a>
+            <button type="button" class="navbar-toggle collapsed" (click)="toggleHam()">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse" [ngClass]="{in : hamOpen}">
             <ul class="nav navbar-nav">
-                <li><a href="#">Download</a></li>
+                <li><a>Download</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="https://www.paypal.me/damay" target="_blank">Donate</a></li>
-                <li><a>Feedback</a></li>
-                <li class="dropdown" [ngClass]="{open: beOpen === true}" (mouseenter)="doOpen()" (mouseleave)="doOpen()">
+                <li><a href="https://github.com/rothbacherc/armok/issues">Feedback</a></li>
+                <li class="dropdown" [ngClass]="{open: dropOpen === true}" (mouseenter)="toggleDrop()"
+                    (mouseleave)="toggleDrop()">
                     <a class="dropdown-toggle" role="button" style="cursor: pointer">
-                        Account 
+                        Account
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu" style="cursor: pointer">
-                        <li><a >Manage</a></li>
-                        <li><a (click)="toggleModal()">Login</a></li>
+                        <li><a>Manage</a></li>
+                        <li><a *ngIf="!loginService.isLoggedIn()" (click)="toggleModal('login')" >Login</a></li>
+                        <li><a *ngIf="loginService.isLoggedIn()" (click)="sendLogout()">Logout</a></li>
                     </ul>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
+
+<!--This is the dark background of our modal, clicking on it emulates
+the blur event, which was not working properly for me-->
 <div class="modal" [ngClass]="{'modal-on': modalOpen}" (click)="toggleModal()">
-    
 </div>
-<div class="modal-content well" [ngClass]="{'modal-on': modalOpen}">
-    <h3>test</h3>
-    <button class="btn btn-primary" (click)="toggleModal()">close</button>
+
+<!--This is the modal content, it contains two different forms with an ngSwitch case
+The default form is for an existing user to login. The second is for a new user
+to create an account.-->
+<div class="modal-content well" [ngClass]="{'modal-on': modalOpen}" [ngSwitch]="modalType">
+    <i class="material-icons" style="position: absolute; top: 1%; right: 1%; cursor: pointer;" (click)="toggleModal()">clear</i>
+    <div id="existingUser" *ngSwitchDefault>
+        <h3 style="text-align: center; margin-top: 1%; margin-bottom: 6%">Sign In</h3>
+        <form [formGroup]="signInForm" (ngSubmit)="onSignSubmit()">
+
+            <div class="form-group">
+                <label for="inputUsername">Username</label>
+                <input type="text" class="form-control" id="inputUsername" formControlName="username" placeholder="Username">
+            </div>
+            <div class="form-group">
+                <label for="inputPass">Password</label>
+                <input type="password" class="form-control" id="inputPass" formControlName="password" placeholder="Password">
+            </div>
+            <span style="display: block; padding-bottom: 5%">
+                <a class="pull-right" style="color:#acc8cc; cursor: pointer; display: inline-block">Forgot password?</a>
+                <a style="color:#acc8cc; cursor: pointer; display: inline-block" (click)="swapModal('create')">Create an account</a>
+            </span>
+            <button class="btn btn-primary pull-right" type="submit">Sign In</button>
+        </form>
+    </div>
+    <div id="newUser" *ngSwitchCase="'create'">
+        <h3 style="text-align: center; margin-top: 1%; margin-bottom: 6%">Create Account</h3>
+        <form [formGroup]="signUpForm" (ngSubmit)="onCreateSubmit()">
+            <div class="form-group">
+                <label for="inputUsername">Username</label>
+                <input type="text" class="form-control" id="inputUsername" formControlName="username" placeholder="Username">
+            </div>
+            <div class="form-group">
+                <label for="inputEmail">Email</label>
+                <input type="email" class="form-control" id="inputEmail" formControlName="email" placeholder="Enter email">
+                <small id="emailHelp" class="form-text text-muted" style="color: #a2a9aa">Used for account reset only.</small>
+            </div>
+            <div class="form-group">
+                <label for="inputPass">Password</label>
+                <input type="password" class="form-control" id="inputPass" formControlName="password" placeholder="Password">
+            </div>
+            <span style="display: block; padding-bottom: 10%">
+                    <a class="pull-right" style="color:#acc8cc; cursor: pointer;" (click)="swapModal('login')">Login with existing account</a>
+            </span>
+            <button class="btn btn-primary pull-right" type="submit">Create Account</button>
+        </form>
+    </div>
 </div>

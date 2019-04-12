@@ -46,11 +46,18 @@ body{
     color: #acc8cc;
 }
 
+.navbar-default{
+    background-color: #323c42;
+    border-color: #26333a;
+    color: #acc8cc;
+}
+
 .navbar-inverse .navbar-brand{
     color: #acc8cc;
 }
 
 .navbar-inverse .navbar-brand:hover{
+    background-color: #1a1f20;
     color: #e6fcff;
 }
 
@@ -169,4 +176,39 @@ body{
     max-height: calc(90vh - 140px);
     scrollbar-width: thin;
     overflow: auto;
+}
+
+.btn-primary{
+    background-color: #222d33;
+    border-color: #222d33;
+    color: #e6fcff;
+}
+
+.btn-primary:hover{
+    background-color: #1a1f20;
+    border-color: #222d33;
+    color: #e6fcff;
+}
+
+.btn-primary:active{
+    background-color: #1a1f20;
+    border-color: #222d33;
+    color: #e6fcff;
+}
+
+.btn-primary:focus{
+    background-color: #1a1f20;
+    border-color: #222d33;
+    color: #e6fcff;
+}
+
+.form-control{
+    /* background-color: #cbd2df; */
+    background-color: #ccc;
+    color: #1a1f20;
+}
+
+.form-control:focus{
+    border-color: #e6fcff;
+    box-shadow: #bed0d3;
 }

@@ -1,5 +1,4 @@
 import { Component, OnInit, DoCheck } from '@angular/core';
-import { trigger, state, style, transition, animate } from '@angular/animations';
 import { MySavesService } from 'src/app/services/my-saves.service';
 import { Save } from 'src/app/models/save.model';
 
