@@ -1,38 +1,25 @@
 import { Injectable } from '@angular/core';
 import { Save } from '../models/save.model';
 import { MySavesService } from './my-saves.service';
+import { BloodSaveService } from './blood-save.service';
+import { AllSavesService } from './all-saves.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UploadSaveService {
-  newSaveType: string
 
-  constructor(private mySaves: MySavesService) { }
+  constructor(private mySaves: MySavesService, private bloodSaves: BloodSaveService, private allSaves: AllSavesService) { }
 
   addNewSave(save: Save){
-    
-    switch(save.type){
-      case saveTypes.seed: {
-        this.newSaveType = 'Seed'
-        break
-      }
-      case saveTypes.world: {
-        this.newSaveType = 'World'
-        break
-      }
-      case saveTypes.fort: {
-        this.newSaveType = 'Fort'
-        break
-      }
-      case saveTypes.character: {
-        this.newSaveType = 'Character'
-        break
-      }
-    }
-
     if(save.isPrivate){
-      this.mySaves.addSave(this.newSaveType, save)
+      this.mySaves.addSave(save)
+    }
+    else{
+      if(save.isBlood){
+        this.bloodSaves.addSave(save)
+      }
+      this.allSaves.addSave(save)
     }
 
   }

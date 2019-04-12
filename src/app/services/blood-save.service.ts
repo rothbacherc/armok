@@ -4,17 +4,17 @@ import { Save } from '../models/save.model';
 @Injectable({
   providedIn: 'root'
 })
-export class AllSavesService {
+export class BloodSaveService {
 
-  private allSaves: Save[][] =[[],[],[],[]]
+  private bloodSaves: Save[][] = [[],[],[],[]]
 
   constructor() { }
 
-  getAllSaves() {
-    return this.allSaves
+  getBloodSaves() {
+    return this.bloodSaves
   }
 
   addSave(save: Save){
-    this.allSaves[save.type].push(save)
+    this.bloodSaves[save.type].push(save)
   }
 }

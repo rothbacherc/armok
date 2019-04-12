@@ -70,12 +70,14 @@ export class AnnouncementComponent implements OnInit, DoCheck {
     if(this.loggedIn){
       this.uploadSave = new Save(this.newSave.controls.saveName.value, 
         this.newSaveType, this.newSave.controls.description.value,
-        this.newSave.controls.vis.value, this.loginService.getCurrentUsername())
+        this.newSave.controls.vis.value, this.newSave.controls.blood.value,
+        this.loginService.getCurrentUsername())
     }
     else{
       this.uploadSave = new Save(this.newSave.controls.saveName.value, 
         this.newSaveType, this.newSave.controls.description.value,
-        this.newSave.controls.vis.value, 'Anonymous')
+        this.newSave.controls.vis.value, this.newSave.controls.blood.value,
+        'Anonymous')
     }
     this.uploadFile = new File(this.newSave.controls.saveName.value, 
       this.newSave.controls.save.value)

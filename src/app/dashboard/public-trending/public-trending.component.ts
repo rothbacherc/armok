@@ -21,10 +21,10 @@ export class PublicTrendingComponent implements OnInit, DoCheck {
   static ecS = '#4f5052' //empty color style
   static cS = 'auto' //cursor style
 
-  constructor(private mySaveService: TrendSavesService) { }
+  constructor(private trendSaveService: TrendSavesService) { }
 
   ngOnInit() {
-    this.trendSaves = this.mySaveService.getTrendSaves()
+    this.trendSaves = this.trendSaveService.getTrendSaves()
   }
 
   ngDoCheck() {

@@ -1,3 +1,45 @@
-<p>
-  public-bloodline works!
-</p>
+<div class="panel-group" style="padding-top: 2%">
+  <div class="panel panel-default" *ngFor="let saveList of bloodSaves; let i = index">
+    <div class="panel-heading" (click)="toggleCollapse(i)" [ngStyle]="{
+                                                                    'background-color': this.mapbgStyles[i],
+                                                                    'color': this.mapcStyles[i],
+                                                                    'cursor': this.mapcsStyles[i]}">
+      <h4 class="panel-title">
+        {{ typeNames[i] }}
+      </h4>
+    </div>
+    <div id="seeds" class="panel-collapse" [ngClass]="{collapse: this.mapCollapse[i] === true}">
+      <ul class="list-group">
+        <ng-container *ngFor="let save of saveList">
+          <li class="list-group-item">
+            <div style="display: inline-block">
+              <h4>{{ save.sName }}</h4>
+              <p>Urist {{ save.uName }}</p>
+            </div>
+            <div style="float: right; position: relative; bottom: .2em;">
+              <div>
+                <div style="display: inline-block">
+                  <i class="material-icons" style="position: relative; padding-left: .5em; top: .2em;">publish</i>
+                </div>
+                <div style="display: inline-block; padding-left: 1.6em">
+                  <p style="display: inline-block; font-size: 1.4em;">{{ save.downloads }}</p>
+                  <i class="material-icons" style="position: relative; padding-left: .5em; top: .25em;">get_app</i>
+                </div>
+              </div>
+              <div>
+                <div style="display:inline-block">
+                  <p style="display: inline-block; font-size: 1.4em">{{ save.upVotes }}</p>
+                  <i class="material-icons" style="position: relative; padding-left: .5em; top: .2em;">thumb_up_alt</i>
+                </div>
+                <div style="display:inline-block; padding-left: .9em">
+                  <p style="display: inline-block; font-size: 1.4em">{{ save.dnVotes }}</p>
+                  <i class="material-icons"
+                    style="position: relative; padding-left: .5em; top: .1em;">thumb_down_alt</i>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ng-container>
+      </ul>
+    </div>
+  </div>
