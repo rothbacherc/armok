@@ -8,18 +8,14 @@ import { Save } from 'src/app/models/save.model';
   styleUrls: ['./public-trending.component.css']
 })
 export class PublicTrendingComponent implements OnInit, DoCheck {
-  trendSaves: Map<string, Save[]>
-  mapCollapse: Map<string, boolean> = new Map([
-    ['Seeds', true], ['Worlds', true], ['Forts', true], ['Characters', true]
-  ])
-  mapbgStyles: Map<string, string> = new Map([
-    ['Seeds', ''], ['Worlds', ''], ['Forts', ''], ['Characters', '']
-  ])
-  mapcStyles: Map<string, string> = new Map([
-    ['Seeds', ''], ['Worlds', ''], ['Forts', ''], ['Characters', '']
-  ])
-  mapcsStyles: Map<string, string> = new Map([
-    ['Seeds', ''], ['Worlds', ''], ['Forts', ''], ['Characters', '']
+  trendSaves: Save[][]
+  typeNames: string[] = ['Seeds', 'Worlds', 'Forts', 'Characters']
+  mapCollapse: boolean[] = [true, true, true, true]
+  mapbgStyles: string[] = ['','','','']
+  mapcStyles: string[] = ['','','','']
+  mapcsStyles: string[] = ['','','','']
+  mapStates: Map<string, string> = new Map([
+    ['Seeds', 'closed'], ['Worlds', 'closed'], ['Forts', 'closed'], ['Characters', 'closed']
   ])
   static ebgS = '#2c2d2e' //empty background style
   static ecS = '#4f5052' //empty color style
@@ -32,16 +28,16 @@ export class PublicTrendingComponent implements OnInit, DoCheck {
   }
 
   ngDoCheck() {
-    this.hideIfEmpty('Seeds');this.hideIfEmpty('Worlds');this.hideIfEmpty('Forts');this.hideIfEmpty('Characters')
+    this.hideIfEmpty(0);this.hideIfEmpty(1);this.hideIfEmpty(2);this.hideIfEmpty(3)
   }
 
-  hideIfEmpty(elem: string) {
-        this.mapbgStyles.set(elem, this.trendSaves.get(elem).length === 0 ? PublicTrendingComponent.ebgS : '')
-        this.mapcStyles.set(elem, this.trendSaves.get(elem).length === 0 ? PublicTrendingComponent.ecS : '')
-        this.mapcsStyles.set(elem, this.trendSaves.get(elem).length === 0 ? PublicTrendingComponent.cS : '')
+  hideIfEmpty(key: number) {
+        this.mapbgStyles[key] = this.trendSaves[key].length === 0 ? PublicTrendingComponent.ebgS : ''
+        this.mapcStyles[key] = this.trendSaves[key].length === 0 ? PublicTrendingComponent.ecS : ''
+        this.mapcsStyles[key] = this.trendSaves[key].length === 0 ? PublicTrendingComponent.cS : ''
   }
 
-  toggleCollapse(elem: string) {
-    this.mapCollapse.set(elem, this.trendSaves.get(elem).length > 0 ? !this.mapCollapse.get(elem) : this.mapCollapse.get(elem))
+  toggleCollapse(elem: number) {
+    this.mapCollapse[elem] = this.trendSaves[elem].length > 0 ? !this.mapCollapse[elem] : this.mapCollapse[elem]
   }
 }

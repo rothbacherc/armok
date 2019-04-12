@@ -204,11 +204,137 @@ body{
 
 .form-control{
     /* background-color: #cbd2df; */
-    background-color: #ccc;
-    color: #1a1f20;
+    background-color: #1f2529;
+    border-color: #262d31;
+    color: #e6fcff;
+    -webkit-appearance: none;
+    -moz-appearance: none;
 }
 
 .form-control:focus{
-    border-color: #e6fcff;
-    box-shadow: #bed0d3;
+    border-color: #424d4e;
+    box-shadow: #87999c;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+textarea{
+    resize: none;
+}
+
+input[type="file"]{
+    width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.custom-file-upload{
+    background-color: #222d33;
+    border-color: #222d33;
+    color: #e6fcff;
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    border: 1px solid transparent;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    border-radius: 4px;
+}
+
+.custom-file-upload:hover{
+    background-color: #1a1f20;
+    border-color: #222d33;
+    color: #e6fcff;
+}
+
+input[type="radio"]{
+    width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.custom-radio{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    position: absolute;
+    top: 3px;
+    left: 0;
+    height: 15px;
+    width: 15px;
+    border: 0;
+    border-radius: 50%;
+    background-color: #1f2529;
+}
+
+.custom-radio:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.radio input:checked ~ .custom-radio:after{
+    display: block;
+}
+
+.radio .custom-radio:after{
+    top: 4px;
+	left: 4px;
+	width: 7px;
+	height: 7px;
+	border-radius: 50%;
+	background: #98a8aa;
+}
+
+input[type="checkbox"]{
+    width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.custom-checkbox{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    position: absolute;
+    top: 3px;
+    left: 0;
+    height: 15px;
+    width: 15px;
+    border: 0;
+    background-color: #1f2529;
+}
+
+.custom-checkbox:after{
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.checkbox input:checked ~ .custom-checkbox:after{
+    display: block;
+}
+
+.checkbox .custom-checkbox:after{
+    left: 5px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid #98a8aa;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
 }

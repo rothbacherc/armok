@@ -3,6 +3,7 @@
     <ul class="nav nav-tabs">
       <li [ngClass]="{active: openTab === 'announce'}"><a (click)="chooseTab('announce')">Announcements</a></li>
       <li [ngClass]="{active: openTab === 'feat'}"><a (click)="chooseTab('feat')">Featured Save</a></li>
+      <li [ngClass]="{active: openTab === 'selected'}"><a (click)="chooseTab('selected')">Selected Save</a></li>
       <li [ngClass]="{active: openTab === 'upload'}"><a (click)="chooseTab('upload')">Upload</a></li>
     </ul>
     <div id="announce" *ngSwitchDefault>
@@ -18,8 +19,14 @@
 
       </div>
     </div>
-    <div id="upload" *ngSwitchCase="'upload'">
+    <div id="selected" *ngSwitchCase="'selected'">
       <div class="well" style="border: none">
+  
+      </div>
+    </div>
+    <div id="upload" *ngSwitchCase="'upload'">
+      <div class="well" style="border: none;">
+
         <form [formGroup]="newSave" (ngSubmit)="onSubmit()">
           <div class="row">
             <div class="col-md-6">
@@ -27,45 +34,73 @@
                 <label for="saveName" style="padding-right: 1%">Save Name</label>
                 <input type="text" class="form-control" formControlName="saveName" 
                 placeholder="Save Name">
+                <small id="userAlert" 
+                class="form-text text-muted" 
+                style="color: #a2a9aa"
+                *ngIf="!loggedIn">You are not logged in, this save will be uploaded anonymously.</small>
+                <small id="userAlert" 
+                class="form-text text-muted" 
+                style="color: #a2a9aa"
+                *ngIf="loggedIn">You are logged in, this save will be uploaded with your username.</small>
               </div>
               <div class="form-group">
                 <label for="description">Description</label>
-                <textarea class="form-control" rows="3" formControlName="description"
+                <textarea class="form-control" rows="3" maxlength="200" formControlName="description"
                   placeholder="Description"></textarea>
               </div>
             </div>
-            <div class="col-md-6" style="padding-right: 1%">
-              <div class="row">
+            <div class="col-md-6" style="padding-left: 8%">
+              <div class="row" style="padding-top: 6%;">
                 <div class="col-md-3">
                   <label for="type">Save Type</label>
-                    <div class="radio" *ngFor="let type of listTypes">
-                      <label>
-                        <input
-                          type="radio"
-                          formControlName="type"
-                          [value]="type">{{ type }}
-                      </label>
-                    </div>
-                  </div>
-                <div class="col-md-3">
-                  <label for="visibility"></label>
-                  <div class="radio" *ngFor="let vis of listVisibility">
-                    <label><input 
-                      type="radio"
-                      formControlName="visibility"
-                      [value]="visibility">{{ vis }}
+                  <div class="radio" *ngFor="let type of listTypes">
+                    <label>
+                      <input
+                        type="radio"
+                        formControlName="type"
+                        [value]="type">{{ type }}
+                        <span class="custom-radio"></span>
                     </label>
                   </div>
                 </div>
+                <div class="col-md-3">
+                  <label for="visibility">Share</label>
+                  <div class="radio" *ngFor="let vis of listVisibility">
+                    <label>
+                      <input 
+                        type="radio"
+                        formControlName="vis"
+                        [value]="vis">{{ vis }}
+                        <span class="custom-radio"></span>
+                    </label>
+                  </div>
+                  <div class="checkbox" style="margin-top: 33%;">
+                    <label>
+                      <input 
+                      type="checkbox"
+                      formControlName="blood">Bloodline
+                      <span class="custom-checkbox"></span>
+                    </label>
+                  </div>
+                </div>
+                <div class="col-md-5" style="padding-left: 1%;">
+                  <label for="save" style="display: block; padding-bottom: 3%">Upload Save</label>
+                  <label class="custom-file-upload">
+                    <input 
+                    class="inputfile" 
+                    type="file"
+                    formControlName="save">Choose a file
+                  </label>
+                  <button class="btn btn-primary" style="margin-top: 20%; margin-left: 20%;" type="submit">Upload</button>
+                </div>
               </div>
-              <div class="row">
-                
-              </div>
+              
             </div>
           </div>
-
+          
         </form>
       </div>
+      
     </div>
   </div>
 </div>

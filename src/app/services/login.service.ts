@@ -5,8 +5,8 @@ import { User } from '../models/user.model';
   providedIn: 'root'
 })
 export class LoginService {
-  currentUser: User
-  listUsers: User[] = []
+  private currentUser: User
+  private listUsers: User[] = []
 
   constructor() { }
 
@@ -36,6 +36,10 @@ export class LoginService {
       return true
     }
     return false
+  }
+
+  getCurrentUsername(){
+    return this.currentUser.uName
   }
 
   logOut(){

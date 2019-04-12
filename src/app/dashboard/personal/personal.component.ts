@@ -2,25 +2,23 @@ import { Component, OnInit, DoCheck } from '@angular/core';
 import { MySavesService } from 'src/app/services/my-saves.service';
 import { Save } from 'src/app/models/save.model';
 
+/*I had a big oopsie from the start where I tried to use a Map<string, Save[]>
+to hold the save lists, I don't know why. Save[][] is a lot easier and actually
+required to make the savelists expandable.  There might be artifacts of that 
+initial workaround if there are remaining maps in the personal/public components*/ 
+
 @Component({
   selector: 'app-personal',
   templateUrl: './personal.component.html',
   styleUrls: ['./personal.component.css'],
 })
 export class PersonalComponent implements OnInit, DoCheck {
-  mySaves: Map<string, Save[]>
-  mapCollapse: Map<string, boolean> = new Map([
-    ['Seeds', true], ['Worlds', true], ['Forts', true], ['Characters', true]
-  ])
-  mapbgStyles: Map<string, string> = new Map([
-    ['Seeds', ''], ['Worlds', ''], ['Forts', ''], ['Characters', '']
-  ])
-  mapcStyles: Map<string, string> = new Map([
-    ['Seeds', ''], ['Worlds', ''], ['Forts', ''], ['Characters', '']
-  ])
-  mapcsStyles: Map<string, string> = new Map([
-    ['Seeds', ''], ['Worlds', ''], ['Forts', ''], ['Characters', '']
-  ])
+  mySaves: Save[][]
+  typeNames: string[] = ['Seeds', 'Worlds', 'Forts', 'Characters']
+  mapCollapse: boolean[] = [true, true, true, true]
+  mapbgStyles: string[] = ['','','','']
+  mapcStyles: string[] = ['','','','']
+  mapcsStyles: string[] = ['','','','']
   mapStates: Map<string, string> = new Map([
     ['Seeds', 'closed'], ['Worlds', 'closed'], ['Forts', 'closed'], ['Characters', 'closed']
   ])
@@ -35,16 +33,16 @@ export class PersonalComponent implements OnInit, DoCheck {
   }
 
   ngDoCheck() {
-    this.hideIfEmpty('Seeds');this.hideIfEmpty('Worlds');this.hideIfEmpty('Forts');this.hideIfEmpty('Characters')
+    this.hideIfEmpty(0);this.hideIfEmpty(1);this.hideIfEmpty(2);this.hideIfEmpty(3)
   }
 
-  hideIfEmpty(elem: string) {
-        this.mapbgStyles.set(elem, this.mySaves.get(elem).length === 0 ? PersonalComponent.ebgS : '')
-        this.mapcStyles.set(elem, this.mySaves.get(elem).length === 0 ? PersonalComponent.ecS : '')
-        this.mapcsStyles.set(elem, this.mySaves.get(elem).length === 0 ? PersonalComponent.cS : '')
+  hideIfEmpty(key: number) {
+        this.mapbgStyles[key] = this.mySaves[key].length === 0 ? PersonalComponent.ebgS : ''
+        this.mapcStyles[key] = this.mySaves[key].length === 0 ? PersonalComponent.ecS : ''
+        this.mapcsStyles[key] = this.mySaves[key].length === 0 ? PersonalComponent.cS : ''
   }
 
-  toggleCollapse(elem: string) {
-    this.mapCollapse.set(elem, this.mySaves.get(elem).length > 0 ? !this.mapCollapse.get(elem) : this.mapCollapse.get(elem))
+  toggleCollapse(elem: number) {
+    this.mapCollapse[elem] = this.mySaves[elem].length > 0 ? !this.mapCollapse[elem] : this.mapCollapse[elem]
   }
 }
