@@ -60,7 +60,6 @@ export class HeaderComponent implements OnInit, DoCheck {
   }
 
   onSignSubmit(){
-    
     this.userToken = new User(this.signInForm.controls.username.value, this.signInForm.controls.password.value)
     if(this.loginService.loginUser(this.userToken)){
       this.toggleModal()
