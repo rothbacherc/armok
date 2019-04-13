@@ -140,6 +140,16 @@ body{
     background-color: #2e3c44;
 }
 
+.list-group-item.active{
+    background-color: #2e3c44;
+    border-color: #222d33;
+}
+
+.list-group-item.active:hover{
+    background-color: #2e3c44;
+    border-color: #222d33;
+}
+
 .nav-tabs > li > a:hover{
     background-color: #242b30;
     border-color: #242b30;

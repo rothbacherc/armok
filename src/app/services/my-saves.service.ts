@@ -5,7 +5,7 @@ import { Save } from '../models/save.model';
   providedIn: 'root'
 })
 export class MySavesService {
-
+  didLogout: boolean = false
 
   // private mySaves: Map<string, Save[]> =
   //   new Map([
@@ -19,9 +19,14 @@ export class MySavesService {
   constructor() { }
 
   getAllMySaves() {
+    this.didLogout = false
     return this.mySaves
   }
   addSave(save: Save){
     this.mySaves[save.type].push(save)
+  }
+  logoutSaves(){
+    this.didLogout = true
+    this.mySaves = [[],[],[],[]]
   }
 }

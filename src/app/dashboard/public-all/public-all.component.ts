@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AllSavesService } from 'src/app/services/all-saves.service';
 import { Save } from 'src/app/models/save.model';
+import { SelectSaveService } from 'src/app/services/select-save.service';
 
 @Component({
   selector: 'app-public-all',
@@ -20,8 +21,9 @@ export class PublicAllComponent implements OnInit {
   static ebgS = '#2c2d2e' //empty background style
   static ecS = '#4f5052' //empty color style
   static cS = 'auto' //cursor style
+  activeSelected: string = ''
 
-  constructor(private allSaveService: AllSavesService) { }
+  constructor(private allSaveService: AllSavesService, private selectService: SelectSaveService) { }
 
   ngOnInit() {
     this.allSaves = this.allSaveService.getAllSaves()
@@ -39,5 +41,9 @@ export class PublicAllComponent implements OnInit {
 
   toggleCollapse(elem: number) {
     this.mapCollapse[elem] = this.allSaves[elem].length > 0 ? !this.mapCollapse[elem] : this.mapCollapse[elem]
+  }
+  setSelected(save: Save){
+    this.activeSelected = save.uName
+    this.selectService.setSelected(save)
   }
 }

@@ -11,7 +11,7 @@
     <div id="seeds" class="panel-collapse" [ngClass]="{collapse: this.mapCollapse[i] === true}">
       <ul class="list-group">
         <ng-container *ngFor="let save of saveList">
-          <li class="list-group-item">
+          <li class="list-group-item" (click)="setSelected(save)" [ngClass]="{active: save.uName === this.activeSelected}">
             <div style="display: inline-block">
               <h4>{{ save.sName }}</h4>
               <p>Urist {{ save.uName }}</p>

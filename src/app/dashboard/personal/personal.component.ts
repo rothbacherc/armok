@@ -1,6 +1,7 @@
 import { Component, OnInit, DoCheck } from '@angular/core';
 import { MySavesService } from 'src/app/services/my-saves.service';
 import { Save } from 'src/app/models/save.model';
+import { SelectSaveService } from 'src/app/services/select-save.service';
 
 /*I had a big oopsie from the start where I tried to use a Map<string, Save[]>
 to hold the save lists, I don't know why. Save[][] is a lot easier and actually
@@ -25,8 +26,9 @@ export class PersonalComponent implements OnInit, DoCheck {
   static ebgS = '#2c2d2e' //empty background style
   static ecS = '#4f5052' //empty color style
   static cS = 'auto' //cursor style
+  activeSelected: string = ''
 
-  constructor(private mySaveService: MySavesService) { }
+  constructor(private mySaveService: MySavesService, private selectService: SelectSaveService) { }
 
   ngOnInit() {
     this.mySaves = this.mySaveService.getAllMySaves()
@@ -34,6 +36,9 @@ export class PersonalComponent implements OnInit, DoCheck {
 
   ngDoCheck() {
     this.hideIfEmpty(0);this.hideIfEmpty(1);this.hideIfEmpty(2);this.hideIfEmpty(3)
+    if(this.mySaveService.didLogout){
+      this.mySaves = this.mySaveService.getAllMySaves() //THIS ISN"T WORKING
+    }
   }
 
   hideIfEmpty(key: number) {
@@ -44,5 +49,9 @@ export class PersonalComponent implements OnInit, DoCheck {
 
   toggleCollapse(elem: number) {
     this.mapCollapse[elem] = this.mySaves[elem].length > 0 ? !this.mapCollapse[elem] : this.mapCollapse[elem]
+  }
+  setSelected(save: Save){
+    this.activeSelected = save.uName
+    this.selectService.setSelected(save)
   }
 }

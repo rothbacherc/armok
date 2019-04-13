@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Save } from 'src/app/models/save.model';
 import { BloodSaveService } from 'src/app/services/blood-save.service';
+import { SelectSaveService } from 'src/app/services/select-save.service';
 
 @Component({
   selector: 'app-public-bloodline',
@@ -20,8 +21,9 @@ export class PublicBloodlineComponent implements OnInit {
   static ebgS = '#2c2d2e' //empty background style
   static ecS = '#4f5052' //empty color style
   static cS = 'auto' //cursor style
+  activeSelected: string = ''
 
-  constructor(private bloodSaveService: BloodSaveService) { }
+  constructor(private bloodSaveService: BloodSaveService, private selectService: SelectSaveService) { }
 
   ngOnInit() {
     this.bloodSaves = this.bloodSaveService.getBloodSaves()
@@ -39,5 +41,9 @@ export class PublicBloodlineComponent implements OnInit {
 
   toggleCollapse(elem: number) {
     this.mapCollapse[elem] = this.bloodSaves[elem].length > 0 ? !this.mapCollapse[elem] : this.mapCollapse[elem]
+  }
+  setSelected(save: Save){
+    this.activeSelected = save.uName
+    this.selectService.setSelected(save)
   }
 }

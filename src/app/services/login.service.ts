@@ -1,30 +1,31 @@
 import { Injectable } from '@angular/core';
 import { User } from '../models/user.model';
+import { MySavesService } from './my-saves.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
   private currentUser: User
-  private listUsers: User[] = []
+  private listUsers: string[] = []
 
-  constructor() { }
+  constructor(private mySaves: MySavesService) { }
 
   loginUser(user: User): boolean{
-    if(this.listUsers.indexOf(user) !== -1){
+    let num = this.listUsers.indexOf(user.uName)
+    if(num !== -1){
       this.currentUser = user
       localStorage.setItem('user', this.currentUser.uName)
-      console.log(this.listUsers)
       return true
-    }else{
-      console.log('fucc')
+    }
+    else{
       return false
     }
   }
 
   createUser(user: User): boolean{
-    if(!(this.listUsers.indexOf(user) !== -1)){
-      this.listUsers.push(user)
+    if(!(this.listUsers.indexOf(user.uName) !== -1)){
+      this.listUsers.push(user.uName)
       return this.loginUser(user)
     }
     return false
@@ -38,10 +39,11 @@ export class LoginService {
   }
 
   getCurrentUsername(){
-    return this.currentUser.uName
+    return localStorage.getItem('user')
   }
 
   logOut(){
+    this.mySaves.logoutSaves()
     localStorage.clear()
     //might need to navigate here
   }

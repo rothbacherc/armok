@@ -1,6 +1,7 @@
 import { Component, OnInit, DoCheck } from '@angular/core';
 import { TrendSavesService } from 'src/app/services/trend-saves.service';
 import { Save } from 'src/app/models/save.model';
+import { SelectSaveService } from 'src/app/services/select-save.service';
 
 @Component({
   selector: 'app-public-trending',
@@ -20,8 +21,9 @@ export class PublicTrendingComponent implements OnInit, DoCheck {
   static ebgS = '#2c2d2e' //empty background style
   static ecS = '#4f5052' //empty color style
   static cS = 'auto' //cursor style
+  activeSelected: string = ''
 
-  constructor(private trendSaveService: TrendSavesService) { }
+  constructor(private trendSaveService: TrendSavesService, private selectService: SelectSaveService) { }
 
   ngOnInit() {
     this.trendSaves = this.trendSaveService.getTrendSaves()
@@ -39,5 +41,9 @@ export class PublicTrendingComponent implements OnInit, DoCheck {
 
   toggleCollapse(elem: number) {
     this.mapCollapse[elem] = this.trendSaves[elem].length > 0 ? !this.mapCollapse[elem] : this.mapCollapse[elem]
+  }
+  setSelected(save: Save){
+    this.activeSelected = save.uName
+    this.selectService.setSelected(save)
   }
 }

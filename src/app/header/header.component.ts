@@ -3,6 +3,8 @@ import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { User } from '../models/user.model';
 import { LoginService } from '../services/login.service';
+import { Router } from '@angular/router';
+import { routerNgProbeToken } from '@angular/router/src/router_module';
 
 @Component({
   selector: 'app-header',
@@ -21,7 +23,7 @@ export class HeaderComponent implements OnInit, DoCheck {
   userToken: User
   loggedIn: boolean
 
-  constructor(private loginService: LoginService) { }
+  constructor(private loginService: LoginService, private router: Router) { }
 
   ngOnInit() {
     this.signInForm = new FormGroup({
@@ -81,7 +83,8 @@ export class HeaderComponent implements OnInit, DoCheck {
   }
 
   sendLogout(){
-    this.toggleDrop()
     this.loginService.logOut()
+    this.toggleDrop()
+    this.router.navigate(['/dashboard/trending'])
   }
 }

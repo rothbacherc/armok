@@ -22,6 +22,10 @@ export class AnnouncementComponent implements OnInit, DoCheck {
   selectedSaveType: string
   selectedSaveShare: string
   selectedSaveBlood: string
+  featSave: Save
+  featSaveType: string
+  featSaveShare: string
+  featSaveBlood: string
   newSaveType: saveTypes
   newSaveShare: boolean
   openTab: string = 'announce'
@@ -41,14 +45,24 @@ export class AnnouncementComponent implements OnInit, DoCheck {
       'save': new FormControl(null),
     })
     this.getSelect()
+    this.getFeatured()
   }
 
   ngDoCheck(){
     this.loggedIn = this.loginService.isLoggedIn()
+    this.getSelect()
   }
 
   chooseTab(tab: string){
     this.openTab = tab
+  }
+
+  //this is temp proof of concept!
+  getFeatured(){
+    this.featSave = this.selectServ.getSelected()
+    this.featSaveType = this.selectServ.getType()
+    this.featSaveShare = this.selectServ.getShare()
+    this.featSaveBlood = this.selectServ.getBlood()
   }
 
   getSelect(){
