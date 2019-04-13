@@ -11,14 +11,14 @@ export class TrendSavesService {
       new Save('Libya', saveTypes.seed, '', false, true, 'Zach')
     ]
     worldList: Save[] = [
-      new Save('Celestia', saveTypes.world, '', false, false, 'Amil'),
+      new Save('Celestia', saveTypes.world, '', false, false, 'Sparrow'),
       new Save('Illidan', saveTypes.world, '', false, false, 'Megan'),
       new Save('Krogan', saveTypes.world, '', false, true, 'Maggie')
     ]
     fortList: Save[] = [
       new Save('Damali', saveTypes.world, '', false, true, 'Justin'),
       new Save('Black', saveTypes.world, '', false, true, 'Kyle'),
-      new Save('Redwall', saveTypes.world, '', false, false, 'Sparrow')
+      new Save('Redwall', saveTypes.world, '', false, false, 'Amil')
     ]
     characterList: Save[] = [
       new Save('Sten', saveTypes.character, '', false, false, 'Gabby'),
@@ -42,6 +42,11 @@ export class TrendSavesService {
     getTrendSaves() {
       return this.trendSaves
     }
+    
+    getTopSave(){
+      return this.trendSaves[1][0]
+    }
+
     addSave(saveType: string, save: Save){
       //this.seedList.push(save)
       this.trendSaves[0].push(save)

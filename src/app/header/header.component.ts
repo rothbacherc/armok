@@ -19,6 +19,7 @@ export class HeaderComponent implements OnInit, DoCheck {
   signInForm: FormGroup
   signUpForm: FormGroup
   userToken: User
+  loggedIn: boolean
 
   constructor(private loginService: LoginService) { }
 
@@ -61,7 +62,10 @@ export class HeaderComponent implements OnInit, DoCheck {
 
   onSignSubmit(){
     this.userToken = new User(this.signInForm.controls.username.value, this.signInForm.controls.password.value)
-    if(this.loginService.loginUser(this.userToken)){
+    this.loggedIn = this.loginService.loginUser(this.userToken)
+    console.log()
+    if(this.loggedIn){
+      
       this.toggleModal()
       this.signInForm.reset()
     }

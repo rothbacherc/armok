@@ -45,7 +45,7 @@ to create an account.-->
     <i class="material-icons" style="position: absolute; top: 1%; right: 1%; cursor: pointer;" (click)="toggleModal()">clear</i>
     <div id="existingUser" *ngSwitchDefault>
         <h3 style="text-align: center; margin-top: 1%; margin-bottom: 6%">Sign In</h3>
-        <form [formGroup]="signInForm" (ngSubmit)="onSignSubmit()">
+        <form [formGroup]="signInForm" (ngSubmit)="onSignSubmit()" style="padding-top: 8%">
 
             <div class="form-group">
                 <label for="inputUsername">Username</label>
@@ -81,7 +81,7 @@ to create an account.-->
             <span style="display: block; padding-bottom: 10%">
                     <a class="pull-right" style="color:#acc8cc; cursor: pointer;" (click)="swapModal('login')">Login with existing account</a>
             </span>
-            <button class="btn btn-primary pull-right" type="submit">Create Account</button>
+            <button class="btn btn-primary pull-right" type="submit" style="margin-bottom:3%">Create Account</button>
         </form>
     </div>
 </div>

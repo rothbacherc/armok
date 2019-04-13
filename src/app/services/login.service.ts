@@ -11,23 +11,22 @@ export class LoginService {
   constructor() { }
 
   loginUser(user: User): boolean{
-    if((this.listUsers.indexOf(user) !== -1)){
+    if(this.listUsers.indexOf(user) !== -1){
       this.currentUser = user
       localStorage.setItem('user', this.currentUser.uName)
-      console.log(localStorage.getItem('user'))
+      console.log(this.listUsers)
       return true
+    }else{
+      console.log('fucc')
+      return false
     }
-    return false
   }
 
   createUser(user: User): boolean{
-    console.log('no')
     if(!(this.listUsers.indexOf(user) !== -1)){
       this.listUsers.push(user)
-      console.log('yes')
       return this.loginUser(user)
     }
-    console.log('false')
     return false
   }
 

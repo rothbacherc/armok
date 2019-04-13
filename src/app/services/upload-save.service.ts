@@ -12,13 +12,14 @@ export class UploadSaveService {
   constructor(private mySaves: MySavesService, private bloodSaves: BloodSaveService, private allSaves: AllSavesService) { }
 
   addNewSave(save: Save){
-    if(save.isPrivate){
+    if(save.isPrivate === true){
       this.mySaves.addSave(save)
     }
     else{
       if(save.isBlood){
         this.bloodSaves.addSave(save)
       }
+      this.mySaves.addSave(save)
       this.allSaves.addSave(save)
     }
 

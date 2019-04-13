@@ -22,10 +22,56 @@
     <div id="selected" *ngSwitchCase="'selected'">
       <div class="well" style="border: none">
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-1">
+
+          </div>
+          <div class="col-md-3">
             <div>
-              
+              <div style="padding-bottom: 3%;">
+                <small>Uploaded by:</small>
+                <label style="padding-left: 2%;"for="user">{{ selectedSave.uName }}</label>
+              </div>
+              <label for="description">{{ selectedSave.sName }}</label>
+              <small style="display: block;" *ngIf="this.selectedSave.description" 
+              class="muted">{{ selectedSave.description }}</small>
+              <small style="display: block;" *ngIf="!this.selectedSave.description"
+              class="muted">No description provided</small>
             </div>
+          </div>
+          <div class="col-md-2">
+            <div>
+              <label for="type">Save Type:</label>
+              <small style="padding-left: 4%;" class="muted">{{ selectedSaveType }}</small>
+            </div>
+            <div style="padding-top: 4%">
+              <label for="share">Share:</label>
+              <small style="padding-left: 4%;" class="muted">{{ selectedSaveShare }}</small>
+            </div>
+            <div style="padding-top: 4%">
+              <label for="share">Bloodline:</label>
+              <small style="padding-left: 4%;" class="muted">{{ selectedSaveBlood }}</small>
+            </div>
+          </div>
+          <div class="col-md-1">
+
+          </div>
+          <div class="col-md-2">
+            <div>
+              <label for="download">Downloads:</label>
+              <small style="padding-left: 4%;">{{ selectedSave.downloads }}</small>
+            </div>
+            <div style="padding-top: 4%">
+              <label for="upvotes">Upvotes:</label>
+              <small style="padding-left: 4%;">{{ selectedSave.upVotes }}</small>
+            </div>
+            <div style="padding-top: 4%">
+              <label for="downvotes">Downvotes:</label>
+              <small style="padding-left: 4%;">{{ selectedSave.dnVotes }}</small>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <a class="btn btn-primary"
+            style="margin-top: 18%; margin-left: 20%" download="save.zip">Download</a>
           </div>
         </div>
 
