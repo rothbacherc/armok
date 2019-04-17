@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, DoCheck } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, DoCheck, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Save } from 'src/app/models/save.model';
 import { File } from 'src/app/models/file.model';
@@ -6,13 +6,14 @@ import { LoginService } from 'src/app/services/login.service';
 import { UploadSaveService } from 'src/app/services/upload-save.service';
 import { TrendSavesService } from 'src/app/services/trend-saves.service';
 import { SelectSaveService } from 'src/app/services/select-save.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-announcement',
   templateUrl: './announcement.component.html',
   styleUrls: ['./announcement.component.css']
 })
-export class AnnouncementComponent implements OnInit, DoCheck {
+export class AnnouncementComponent implements OnInit, DoCheck, OnDestroy {
   @ViewChild('fileInput') fileInput: ElementRef
   uploadSave: Save
   uploadFile: File
@@ -31,9 +32,16 @@ export class AnnouncementComponent implements OnInit, DoCheck {
   openTab: string = 'announce'
   listVisibility: string[] = ['Public', 'Private']
   listTypes: string[] = ['Seed', 'World', 'Fort', 'Character']
+  sub: Subscription
 
   constructor(private loginService: LoginService, private addSave: UploadSaveService, 
-    private trendServ: TrendSavesService, private selectServ: SelectSaveService) { }
+    private trendServ: TrendSavesService, private selectServ: SelectSaveService) {
+      this.sub = loginService.logoutCall$.subscribe(
+        () => {
+          this.openTab = 'announce'
+        }
+      )
+     }
 
   ngOnInit() {
     this.newSave = new FormGroup({
@@ -119,4 +127,7 @@ export class AnnouncementComponent implements OnInit, DoCheck {
     this.newSave.reset()
   }
 
+  ngOnDestroy(){
+    this.sub.unsubscribe()
+  }
 }

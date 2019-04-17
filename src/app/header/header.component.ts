@@ -23,7 +23,7 @@ export class HeaderComponent implements OnInit, DoCheck {
   userToken: User
   loggedIn: boolean
 
-  constructor(private loginService: LoginService, private router: Router) { }
+  constructor(private loginService: LoginService) { }
 
   ngOnInit() {
     this.signInForm = new FormGroup({
@@ -85,6 +85,5 @@ export class HeaderComponent implements OnInit, DoCheck {
   sendLogout(){
     this.loginService.logOut()
     this.toggleDrop()
-    this.router.navigate(['/dashboard/trending'])
   }
 }

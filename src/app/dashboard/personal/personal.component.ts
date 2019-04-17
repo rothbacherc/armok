@@ -1,7 +1,9 @@
-import { Component, OnInit, DoCheck } from '@angular/core';
+import { Component, OnInit, DoCheck, OnChanges, OnDestroy } from '@angular/core';
 import { MySavesService } from 'src/app/services/my-saves.service';
 import { Save } from 'src/app/models/save.model';
 import { SelectSaveService } from 'src/app/services/select-save.service';
+import { Subscription } from 'rxjs';
+import { LoginService } from 'src/app/services/login.service';
 
 /*I had a big oopsie from the start where I tried to use a Map<string, Save[]>
 to hold the save lists, I don't know why. Save[][] is a lot easier and actually
@@ -13,7 +15,7 @@ initial workaround if there are remaining maps in the personal/public components
   templateUrl: './personal.component.html',
   styleUrls: ['./personal.component.css'],
 })
-export class PersonalComponent implements OnInit, DoCheck {
+export class PersonalComponent implements OnInit, DoCheck, OnDestroy {
   mySaves: Save[][]
   typeNames: string[] = ['Seeds', 'Worlds', 'Forts', 'Characters']
   mapCollapse: boolean[] = [true, true, true, true]
@@ -27,8 +29,16 @@ export class PersonalComponent implements OnInit, DoCheck {
   static ecS = '#4f5052' //empty color style
   static cS = 'auto' //cursor style
   activeSelected: string = ''
+  sub: Subscription
 
-  constructor(private mySaveService: MySavesService, private selectService: SelectSaveService) { }
+  constructor(private mySaveService: MySavesService, private selectService: SelectSaveService, 
+    private loginService: LoginService) {
+    this.sub = loginService.logoutCall$.subscribe(
+      () => {
+        this.mySaves = [[],[],[],[]]
+      }
+    )
+   }
 
   ngOnInit() {
     this.mySaves = this.mySaveService.getAllMySaves()
@@ -36,9 +46,6 @@ export class PersonalComponent implements OnInit, DoCheck {
 
   ngDoCheck() {
     this.hideIfEmpty(0);this.hideIfEmpty(1);this.hideIfEmpty(2);this.hideIfEmpty(3)
-    if(this.mySaveService.didLogout){
-      this.mySaves = this.mySaveService.getAllMySaves() //THIS ISN"T WORKING
-    }
   }
 
   hideIfEmpty(key: number) {
@@ -53,5 +60,9 @@ export class PersonalComponent implements OnInit, DoCheck {
   setSelected(save: Save){
     this.activeSelected = save.uName
     this.selectService.setSelected(save)
+  }
+
+  ngOnDestroy(){
+    this.sub.unsubscribe()
   }
 }

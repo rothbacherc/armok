@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Save } from '../models/save.model';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,9 @@ export class MySavesService {
   //     ['Forts', this.fortList],
   //     ['Characters', this.characterList]
   //   ])
+
+
+
   private mySaves: Save[][] = [[],[],[],[]]
 
   constructor() { }
@@ -26,7 +30,6 @@ export class MySavesService {
     this.mySaves[save.type].push(save)
   }
   logoutSaves(){
-    this.didLogout = true
     this.mySaves = [[],[],[],[]]
   }
 }

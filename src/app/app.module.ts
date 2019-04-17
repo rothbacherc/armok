@@ -11,6 +11,11 @@ import { PersonalComponent } from './dashboard/personal/personal.component';
 import { PublicTrendingComponent } from './dashboard/public-trending/public-trending.component';
 import { PublicBloodlineComponent } from './dashboard/public-bloodline/public-bloodline.component';
 import { PublicAllComponent } from './dashboard/public-all/public-all.component';
+import { MySavesService } from './services/my-saves.service';
+import { AllSavesService } from './services/all-saves.service';
+import { BloodSaveService } from './services/blood-save.service';
+import { TrendSavesService } from './services/trend-saves.service';
+import { UploadSaveService } from './services/upload-save.service';
 
 
 @NgModule({
@@ -29,7 +34,7 @@ import { PublicAllComponent } from './dashboard/public-all/public-all.component'
     AppRoutingModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [MySavesService, AllSavesService, BloodSaveService, TrendSavesService, UploadSaveService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
