@@ -9,7 +9,7 @@ export class User{
 
     constructor(uName: string, password?: string, email?:string, avatar?, totalDownloads?: number, totalUpvotes?: number, totalDownvotes?: number){
         this.uName = uName
-        this.email = email
+        this.email = email ? email : null
         this.password = password ? password : null
         this.avatar = avatar ? avatar : null
         this.totalDownloads = totalDownloads ? totalDownloads : 0
