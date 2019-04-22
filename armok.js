@@ -4,24 +4,22 @@ var http = require("http");
 var express = require("express");
 var helmet = require("helmet");
 var compression = require("compression");
-var dataAccess_1 = require("./dataAccess");
-var url = 'mongodb://localhost:27017/myproject';
+var bodyParser = require("body-parser");
+var api_1 = require("./api");
 var App = /** @class */ (function () {
     function App() {
         this.app = express();
         this.app.use(helmet());
         this.app.use(compression());
-        this.buildRoutes();
-        this.data = new dataAccess_1.DataAccess();
+        this.app.use(bodyParser.json());
+        this.app.use(bodyParser.urlencoded({ extended: false }));
+        this.app.use('/api', api_1.router);
+        this.app.use(express.static(__dirname + '/dist/armok'));
         var httpServer = http.createServer(this.app);
         httpServer.listen(8080, function () {
             console.log('HTTP Server running on port 8080');
         });
     }
-    App.prototype.buildRoutes = function () {
-        this.router = express.Router();
-        this.app.use(express.static(__dirname + '/dist/armok'));
-    };
     return App;
 }());
 exports.App = App;

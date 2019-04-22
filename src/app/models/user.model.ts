@@ -1,11 +1,13 @@
 export class User{
     public uName: string
     public avatar
-    private email: string
-    private password: string
+    public email: string
+    public password: string
     public totalDownloads: number
     public totalUpvotes: number
     public totalDownvotes: number
+    public salt
+    public hash
 
     constructor(uName: string, password?: string, email?:string, avatar?, totalDownloads?: number, totalUpvotes?: number, totalDownvotes?: number){
         this.uName = uName
