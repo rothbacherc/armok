@@ -63,7 +63,8 @@ export class HeaderComponent implements OnInit, DoCheck {
   }
 
   onSignSubmit(){
-    this.userToken = new User(this.signInForm.controls.username.value, this.signInForm.controls.password.value)
+    this.userToken = new User(this.signInForm.controls.username.value)
+    this.userToken.password = this.signInForm.controls.password.value
     this.loggedIn = this.loginService.loginUser(this.userToken)
     if(this.loggedIn){
       
@@ -73,8 +74,9 @@ export class HeaderComponent implements OnInit, DoCheck {
   }
 
   onCreateSubmit(){
-    this.userToken = new User(this.signUpForm.controls.username.value, this.signUpForm.controls.password.value,
-      this.signUpForm.controls.email.value)
+    this.userToken = new User(this.signUpForm.controls.username.value)
+    this.userToken.password = this.signUpForm.controls.password.value
+    this.userToken.email = this.signUpForm.controls.email.value
     if(this.loginService.createUser(this.userToken)){
       this.toggleModal()
       this.signUpForm.reset()

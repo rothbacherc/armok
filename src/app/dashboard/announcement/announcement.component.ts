@@ -110,7 +110,7 @@ export class AnnouncementComponent implements OnInit, DoCheck, OnDestroy {
       this.uploadSave = new Save(this.newSave.controls.saveName.value, 
         this.newSaveType, this.newSave.controls.description.value,
         this.newSaveShare, this.newSave.controls.blood.value,
-        this.loginService.getCurrentUsername())
+        this.loginService.getCurrentUser().uName)
     }
     else{
       this.uploadSave = new Save(this.newSave.controls.saveName.value, 

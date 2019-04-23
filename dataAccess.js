@@ -41,49 +41,57 @@ var crypto = require("crypto");
 var jwt = require("jsonwebtoken");
 var DataAccess = /** @class */ (function () {
     function DataAccess() {
+        var _this = this;
+        this.myPromise = function (req) {
+            return new Promise(function (resolve, reject) {
+                var bool = false;
+                _this.db.collection('users').findOne({ uName: req.body.uName }, function (err, user) {
+                    if (err) {
+                        reject(err);
+                    }
+                    else if (!user) {
+                        console.log('user');
+                        resolve(null); //'User not found'
+                    }
+                    else {
+                        var hash = crypto.pbkdf2Sync(req.body.password, user.salt, 1000, 64, 'sha512').toString('hex');
+                        bool = user.hash === hash;
+                        if (bool) {
+                            var date = new Date();
+                            date.setDate(date.getDate() + 7);
+                            var token = jwt.sign({
+                                uName: user.uName,
+                                totalDownloads: user.totalDownloads,
+                                totalUpvotes: user.totalUpvotes,
+                                totalDownvotes: user.totalDownvotes,
+                                exp: (date.getTime() / 1000)
+                            }, fs.readFileSync('secret', 'utf8'));
+                            console.log('win');
+                            resolve(token);
+                        }
+                        else {
+                            console.log('pw');
+                            resolve(null); //'Incorrect password'
+                        }
+                    }
+                });
+            });
+        };
         this.url = (fs.readFileSync('mongoString.txt', 'utf8'));
-        //this.mongoConnect()
+        this.mongoConnect();
     }
     DataAccess.prototype.mongoConnect = function () {
-        var _this = this;
-        this.mongo = new mongodb.MongoClient(this.url, { useNewUrlParser: true });
-        this.mongo.connect(function (err, client) {
-            if (client.isConnected()) {
-                _this.db = client.db('test');
-                _this.client = client;
-                console.log("Connected to mongodb");
-            }
-            if (err) {
-                console.log('Mongo connection error:');
-                console.error(err);
-            }
-        });
-    };
-    DataAccess.prototype.addUser = function (req) {
         return __awaiter(this, void 0, void 0, function () {
-            var salt, hash, user, date, token;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         this.mongo = new mongodb.MongoClient(this.url, { useNewUrlParser: true });
-                        salt = crypto.randomBytes(16).toString('hex');
-                        hash = crypto.pbkdf2Sync(req.body.password, salt, 1000, 64, 'sha512').toString('hex');
-                        user = {
-                            uName: req.body.uName,
-                            email: req.body.email,
-                            totalDownloads: 0,
-                            totalDownvotes: 0,
-                            totalUpvotes: 0,
-                            salt: salt,
-                            hash: hash
-                        };
                         return [4 /*yield*/, this.mongo.connect(function (err, client) {
                                 if (client.isConnected()) {
                                     _this.db = client.db('test');
                                     _this.client = client;
                                     console.log("Connected to mongodb");
-                                    _this.db.collection('users').insertOne(user);
                                 }
                                 if (err) {
                                     console.log('Mongo connection error:');
@@ -92,16 +100,36 @@ var DataAccess = /** @class */ (function () {
                             })];
                     case 1:
                         _a.sent();
-                        date = new Date();
-                        date.setDate(date.getDate() + 7);
-                        token = jwt.sign({
-                            uName: user.uName,
-                            exp: (date.getTime() / 1000)
-                        }, fs.readFileSync('secret', 'utf8'));
-                        return [2 /*return*/, token];
+                        return [2 /*return*/];
                 }
             });
         });
+    };
+    DataAccess.prototype.addUser = function (req) {
+        this.mongo = new mongodb.MongoClient(this.url, { useNewUrlParser: true });
+        var salt = crypto.randomBytes(16).toString('hex');
+        var hash = crypto.pbkdf2Sync(req.body.password, salt, 1000, 64, 'sha512').toString('hex');
+        var user = {
+            uName: req.body.uName,
+            totalDownloads: 0,
+            totalUpvotes: 0,
+            totalDownvotes: 0,
+            avatar: '.',
+            email: req.body.email,
+            salt: salt,
+            hash: hash
+        };
+        var date = new Date();
+        date.setDate(date.getDate() + 7);
+        var token = jwt.sign({
+            uName: user.uName,
+            totalDownloads: user.totalDownloads,
+            totalUpvotes: user.totalUpvotes,
+            totalDownvotes: user.totalDownvotes,
+            exp: (date.getTime() / 1000)
+        }, fs.readFileSync('secret', 'utf8'));
+        this.db.collection('users').insertOne(user);
+        return token;
     };
     //this happens anyway, i don't need this...
     //i can't not have it though, i can't sleep...

@@ -5,10 +5,11 @@ import * as jwt from 'jsonwebtoken'
 
 interface User {
     uName: string,
-    email: string,
     totalDownloads: number,
-    totalDownvotes: number,
     totalUpvotes: number,
+    totalDownvotes: number,
+    avatar: any,
+    email: string,
     salt: any,
     hash: any
 }
@@ -21,13 +22,13 @@ export class DataAccess {
 
     constructor() {
         this.url = (fs.readFileSync('mongoString.txt', 'utf8'))
-        //this.mongoConnect()
+        this.mongoConnect()
     }
 
-    private mongoConnect() {
+    private async mongoConnect() {
         this.mongo = new mongodb.MongoClient(this.url, { useNewUrlParser: true })
 
-        this.mongo.connect((err, client) => {
+        await this.mongo.connect((err, client) => {
             if (client.isConnected()) {
                 this.db = client.db('test')
                 this.client = client
@@ -40,7 +41,7 @@ export class DataAccess {
         })
     }
 
-    public async addUser(req: any) {
+    public addUser(req: any): string {
 
         this.mongo = new mongodb.MongoClient(this.url, { useNewUrlParser: true })
 
@@ -48,39 +49,61 @@ export class DataAccess {
         let hash = crypto.pbkdf2Sync(req.body.password, salt, 1000, 64, 'sha512').toString('hex')
         let user = {
             uName: req.body.uName,
-            email: req.body.email,
             totalDownloads: 0,
-            totalDownvotes: 0,
             totalUpvotes: 0,
+            totalDownvotes: 0,
+            avatar: '.',
+            email: req.body.email,
             salt: salt,
             hash: hash
         }
-
-        await this.mongo.connect((err, client) => {
-            if (client.isConnected()) {
-                this.db = client.db('test')
-                this.client = client
-                console.log("Connected to mongodb")
-                
-
-                
-                this.db.collection('users').insertOne(user)
-            }
-            if (err) {
-                console.log('Mongo connection error:')
-                console.error(err)
-            }
-        })
-
-
 
         let date = new Date()
         date.setDate(date.getDate() + 7)
         let token = jwt.sign({
             uName: user.uName,
+            totalDownloads: user.totalDownloads,
+            totalUpvotes: user.totalUpvotes,
+            totalDownvotes: user.totalDownvotes,
             exp: (date.getTime() / 1000)
         }, fs.readFileSync('secret', 'utf8'))
+        this.db.collection('users').insertOne(user)
         return token
+    }
+
+    myPromise = (req: any) => {
+        return new Promise((resolve, reject) => {
+        let bool = false
+        this.db.collection('users').findOne({ uName: req.body.uName }, (err, user) => {
+            
+            if (err) {
+                reject(err)
+            }
+            else if (!user) {
+                resolve(null) //'User not found'
+            }
+            else{
+                let hash = crypto.pbkdf2Sync(req.body.password, user.salt, 1000, 64, 'sha512').toString('hex')
+                bool = user.hash === hash
+                if (bool) {
+                    let date = new Date()
+                    date.setDate(date.getDate() + 7)
+                    let token = jwt.sign({
+                        uName: user.uName,
+                        totalDownloads: user.totalDownloads,
+                        totalUpvotes: user.totalUpvotes,
+                        totalDownvotes: user.totalDownvotes,
+                        exp: (date.getTime() / 1000)
+                    }, fs.readFileSync('secret', 'utf8'))
+                    console.log('win')
+                    resolve(token)
+                }
+                else {
+                    resolve(null) //'Incorrect password'
+                }
+            }
+        })
+    })
     }
 
     //this happens anyway, i don't need this...

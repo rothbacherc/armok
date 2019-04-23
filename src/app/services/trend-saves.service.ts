@@ -50,6 +50,5 @@ export class TrendSavesService {
     addSave(saveType: string, save: Save){
       //this.seedList.push(save)
       this.trendSaves[0].push(save)
-      console.log(this.seedList)
     }
   }
