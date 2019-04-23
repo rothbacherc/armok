@@ -18,8 +18,12 @@
                 <li><a href="https://github.com/rothbacherc/armok/issues" target="_blank">Feedback</a></li>
                 <li class="dropdown" [ngClass]="{open: dropOpen === true}" (mouseenter)="toggleDrop()"
                     (mouseleave)="toggleDrop()">
-                    <a class="dropdown-toggle" role="button" style="cursor: pointer">
+                    <a *ngIf="!loginService.isLoggedIn()" class="dropdown-toggle" role="button" style="cursor: pointer">
                         Account
+                        <span class="caret"></span>
+                    </a>
+                    <a *ngIf="loginService.isLoggedIn()" class="dropdown-toggle" role="button" style="cursor: pointer">
+                        {{ loginService.getCurrentUser().uName }}
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu" style="cursor: pointer">

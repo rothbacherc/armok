@@ -55,7 +55,6 @@ export class LoginService {
     
     this.http.put<string>('/api/login', JSON.parse(JSON.stringify(user)))
       .subscribe((data) => {
-        console.log(data)
         if(data){
           this.saveToken(data)
         }
@@ -68,10 +67,10 @@ export class LoginService {
 
   createUser(user: User) {
     //type conversions to remove methods that cause browser error
-    this.http.put<jwToken>('/api/register', JSON.parse(JSON.stringify(user)))
+    this.http.put<string>('/api/register', JSON.parse(JSON.stringify(user)))
       .subscribe((data) => {
-        if (data.token) {
-          this.saveToken(data.token)
+        if (data) {
+          this.saveToken(data)
         }
         else{
           return false
@@ -103,6 +102,7 @@ export class LoginService {
   logOut() {
     this.mySaves.logoutSaves()
     this.token = ''
+    this.currentUser = null
     localStorage.clear()
     this.logoutCallSource.next()
     this.router.navigate(['/'])

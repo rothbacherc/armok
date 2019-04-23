@@ -36,43 +36,120 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var express = require("express");
+var expressJwt = require("express-jwt");
+var fs = require("fs");
 var dataAccess_1 = require("./dataAccess");
-var passport = require('passport');
 var router = express.Router();
 exports.router = router;
 var data;
 data = new dataAccess_1.DataAccess();
-router.use(function timeLog(req, res, next) {
+var mySecret = fs.readFileSync('secret', 'utf8');
+var checkifAuth = expressJwt({
+    secret: mySecret,
+    credentialsRequired: false
+    // getToken: function fromHeader (req) {
+    //     if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+    //         return req.headers.authorization.split(' ')[1];
+    //     }
+    // }
+});
+router.use(function (req, res, next) {
     next();
 });
 router.get('/', function (req, res) {
     res.sendFile(__dirname, '/dist/armok/index.html');
 });
 router.put('/register', function (req, res) {
-    var strToken = data.addUser(req);
-    res.status(200).json({
-        token: strToken
-    });
-});
-router.put('/login', function (req, res) {
     var _this = this;
     try {
-        var callDataPromise = function (req) { return __awaiter(_this, void 0, void 0, function () {
+        var callAddUserPromise = function (req) { return __awaiter(_this, void 0, void 0, function () {
             var result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, (data.myPromise(req))];
+                    case 0: return [4 /*yield*/, (data.addUserPromise(req))];
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/, result];
                 }
             });
         }); };
-        callDataPromise(req).then(function (result) {
-            res.json(result);
+        callAddUserPromise(req).then(function (result) {
+            res.status(200).json(result);
+        })["catch"](function (reject) {
+            if (reject === 11000) {
+                res.status(409).json('Save name exists');
+            }
+            else {
+                res.status(500);
+            }
         });
     }
     catch (e) {
         console.log(e);
+        res.status(500);
+    }
+    // let strToken = data.addUser(req)
+    // res.status(200).json({
+    //     token: strToken
+    // })
+});
+router.put('/login', function (req, res) {
+    var _this = this;
+    try {
+        var callLoginPromise = function (req) { return __awaiter(_this, void 0, void 0, function () {
+            var result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, (data.loginPromise(req))];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, result];
+                }
+            });
+        }); };
+        callLoginPromise(req).then(function (result) {
+            res.status(200).json(result);
+        })["catch"](function (reject) {
+            if (reject === 'User not found') {
+                res.status(404).json(reject);
+            }
+            else {
+                res.status(401).json(reject);
+            }
+        });
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).json(null);
+    }
+});
+router.put('/upload/save', checkifAuth, function (req, res) {
+    var _this = this;
+    try {
+        var callAddSavePromise = function (req) { return __awaiter(_this, void 0, void 0, function () {
+            var result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, (data.addSavePromise(req))];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, result];
+                }
+            });
+        }); };
+        callAddSavePromise(req).then(function (result) {
+            res.status(200).json(result);
+        })["catch"](function (reject) {
+            if (reject === 11000) {
+                res.status(409).json('Save name exists');
+            }
+            else {
+                res.status(500);
+            }
+        });
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500);
     }
 });

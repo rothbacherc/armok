@@ -42,7 +42,64 @@ var jwt = require("jsonwebtoken");
 var DataAccess = /** @class */ (function () {
     function DataAccess() {
         var _this = this;
-        this.myPromise = function (req) {
+        this.addSavePromise = function (req) {
+            return new Promise(function (resolve, reject) {
+                var save = {
+                    sName: req.body.sName,
+                    type: req.body.type,
+                    description: req.body.description,
+                    isPrivate: req.body.isPrivate,
+                    isBlood: req.body.isBlood,
+                    downloads: 0,
+                    upVotes: 0,
+                    dnVotes: 0,
+                    uName: req.body.uName
+                };
+                _this.db.collection('saves').insertOne(save, function (err, save) {
+                    if (err) {
+                        reject(err.code);
+                    }
+                    else {
+                        resolve('Save inserted');
+                    }
+                });
+            });
+        };
+        //removed a new client from here, it shoulda been useless
+        this.addUserPromise = function (req) {
+            return new Promise(function (resolve, reject) {
+                var salt = crypto.randomBytes(16).toString('hex');
+                var hash = crypto.pbkdf2Sync(req.body.password, salt, 1000, 64, 'sha512').toString('hex');
+                var user = {
+                    uName: req.body.uName,
+                    totalDownloads: 0,
+                    totalUpvotes: 0,
+                    totalDownvotes: 0,
+                    avatar: '.',
+                    email: req.body.email,
+                    salt: salt,
+                    hash: hash
+                };
+                var date = new Date();
+                date.setDate(date.getDate() + 7);
+                var token = jwt.sign({
+                    uName: user.uName,
+                    totalDownloads: user.totalDownloads,
+                    totalUpvotes: user.totalUpvotes,
+                    totalDownvotes: user.totalDownvotes,
+                    exp: (date.getTime() / 1000)
+                }, fs.readFileSync('secret', 'utf8'));
+                _this.db.collection('users').insertOne(user, function (err, save) {
+                    if (err) {
+                        reject(err.code);
+                    }
+                    else {
+                        resolve(token);
+                    }
+                });
+            });
+        };
+        this.loginPromise = function (req) {
             return new Promise(function (resolve, reject) {
                 var bool = false;
                 _this.db.collection('users').findOne({ uName: req.body.uName }, function (err, user) {
@@ -50,8 +107,7 @@ var DataAccess = /** @class */ (function () {
                         reject(err);
                     }
                     else if (!user) {
-                        console.log('user');
-                        resolve(null); //'User not found'
+                        reject('User not found'); //'User not found'
                     }
                     else {
                         var hash = crypto.pbkdf2Sync(req.body.password, user.salt, 1000, 64, 'sha512').toString('hex');
@@ -66,12 +122,10 @@ var DataAccess = /** @class */ (function () {
                                 totalDownvotes: user.totalDownvotes,
                                 exp: (date.getTime() / 1000)
                             }, fs.readFileSync('secret', 'utf8'));
-                            console.log('win');
                             resolve(token);
                         }
                         else {
-                            console.log('pw');
-                            resolve(null); //'Incorrect password'
+                            reject('Incorrect password'); //'Incorrect password'
                         }
                     }
                 });
@@ -104,32 +158,6 @@ var DataAccess = /** @class */ (function () {
                 }
             });
         });
-    };
-    DataAccess.prototype.addUser = function (req) {
-        this.mongo = new mongodb.MongoClient(this.url, { useNewUrlParser: true });
-        var salt = crypto.randomBytes(16).toString('hex');
-        var hash = crypto.pbkdf2Sync(req.body.password, salt, 1000, 64, 'sha512').toString('hex');
-        var user = {
-            uName: req.body.uName,
-            totalDownloads: 0,
-            totalUpvotes: 0,
-            totalDownvotes: 0,
-            avatar: '.',
-            email: req.body.email,
-            salt: salt,
-            hash: hash
-        };
-        var date = new Date();
-        date.setDate(date.getDate() + 7);
-        var token = jwt.sign({
-            uName: user.uName,
-            totalDownloads: user.totalDownloads,
-            totalUpvotes: user.totalUpvotes,
-            totalDownvotes: user.totalDownvotes,
-            exp: (date.getTime() / 1000)
-        }, fs.readFileSync('secret', 'utf8'));
-        this.db.collection('users').insertOne(user);
-        return token;
     };
     //this happens anyway, i don't need this...
     //i can't not have it though, i can't sleep...
