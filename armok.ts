@@ -15,7 +15,7 @@ export class App {
         this.app.use(compression())
         this.app.use(bodyParser.json())
         this.app.use(bodyParser.urlencoded({ extended: false }))
-        this.app.use('/api', router)
+        this.app.use('/api', router) //calls the built routes in api.ts
 
         this.app.use(express.static(__dirname + '/dist/armok'))
 

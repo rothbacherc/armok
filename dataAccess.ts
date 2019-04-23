@@ -3,6 +3,9 @@ import * as fs from 'fs'
 import * as crypto from 'crypto'
 import * as jwt from 'jsonwebtoken'
 
+//similar model to the one we use in the front
+//end but a little different to include the hash/salt
+//so we can store properly
 export interface User {
     uName: string,
     totalDownloads: number,
@@ -14,6 +17,7 @@ export interface User {
     hash: any
 }
 
+//clone of front end model
 export interface Save {
     sName: string
     type: number
@@ -26,20 +30,25 @@ export interface Save {
     uName: string
 }
 
+//db class declaration
 export class DataAccess {
     mongo: mongodb.MongoClient
     client: mongodb.MongoClient
     db: mongodb.Db
     url: string
 
+    //construct by connecting
     constructor() {
         this.url = (fs.readFileSync('mongoString.txt', 'utf8'))
         this.mongoConnect()
     }
 
+    //we do just about everything asynchronously, the promises below
+    //are called asyc, this is declared async
     private async mongoConnect() {
         this.mongo = new mongodb.MongoClient(this.url, { useNewUrlParser: true })
 
+        //try to connect, then assign the db to variables
         await this.mongo.connect((err, client) => {
             if (client.isConnected()) {
                 this.db = client.db('test')
@@ -53,6 +62,10 @@ export class DataAccess {
         })
     }
 
+    //when adding a save we call this promise, the idea is
+    //its like a function that takes in the req, and returns
+    //the promise, the promise will return either resolved
+    //or rejected
     addSavePromise = (req: any) => {
         return new Promise((resolve, reject) => {
             let save: Save = {
@@ -65,22 +78,26 @@ export class DataAccess {
                 upVotes: 0,
                 dnVotes: 0,
                 uName: req.body.uName
-            }
+            }//inserts check against prime keys automagically, no need for extra logic
             this.db.collection('saves').insertOne(save, (err, save) => {
                 if (err) {
-                    reject(err.code)
+                    reject(err.code)//if we fail/error reject the request and tell browser
                 }
                 else {
-                    resolve('Save inserted')
+                    resolve('Save inserted')//baller
                 }
             })
 
         })
     }
 
-    //removed a new client from here, it shoulda been useless
+    //same same as above but for adding users
     addUserPromise = (req: any) => {
         return new Promise((resolve, reject) => {
+            //build salt and hash upfront, if we fail we'll have to re-make them
+            //but it shouldn't be too much issue
+            //if performance is troublesome later maybe move it into the successful
+            //insertion else{} I just don't want to move and break it
             let salt = crypto.randomBytes(16).toString('hex')
             let hash = crypto.pbkdf2Sync(req.body.password, salt, 1000, 64, 'sha512').toString('hex')
             let user: User = {
@@ -114,6 +131,9 @@ export class DataAccess {
         })
     }
 
+    //when we login we need to authenticate basically the same as above,
+    //we default to not allowing the user in. this is important cybersec
+    //stuff. mega secure, badass.
     loginPromise = (req: any) => {
         return new Promise((resolve, reject) => {
             let bool = false

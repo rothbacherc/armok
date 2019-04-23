@@ -3,41 +3,37 @@ import * as expressJwt from 'express-jwt'
 import * as fs from 'fs'
 import { DataAccess } from './dataAccess'
 
-export interface logToken {
-    status: number,
-    message: string
-}
-
+//build router and pull in the db
 let router = express.Router()
 let data: DataAccess
 data = new DataAccess()
 const mySecret = fs.readFileSync('secret', 'utf8')
 
-
+//this is an automated JWT checker to make
+//sure no one is impersonating anyone,
+//anonymous users may still connect
 const checkifAuth = expressJwt({
     secret: mySecret,
     credentialsRequired: false
-    // getToken: function fromHeader (req) {
-    //     if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
-    //         return req.headers.authorization.split(' ')[1];
-    //     }
-    // }
 })
 
+//prolly don't need this, i don't wanna remove it though
 router.use(function (req, res, next) {
     next()
 })
 
+//static file stuff
 router.get('/', function (req, res) {
     res.sendFile(__dirname, '/dist/armok/index.html')
 })
 
+//api magic, /api/register directs here
 router.put('/register', function (req, res) {
-    try {
+    try { //try/catch a promise to call the db for the insert
         let callAddUserPromise = async (req) => {
             let result = await (data.addUserPromise(req))
             return result
-        }
+        } //declaration above, call below
         callAddUserPromise(req).then(function (result) {
             res.status(200).json(result)
         }).catch(function (reject){
@@ -59,6 +55,7 @@ router.put('/register', function (req, res) {
     // })
 })
 
+//this is where /api/login goes, very similar to above
 router.put('/login', function (req, res) {
     try {
         let callLoginPromise = async (req) => {
@@ -81,6 +78,7 @@ router.put('/login', function (req, res) {
     }
 })
 
+//same same but /api/upload/save, used for new saves
 router.put('/upload/save', checkifAuth, function (req, res){
     try{
         let callAddSavePromise = async (req) => {
@@ -104,4 +102,5 @@ router.put('/upload/save', checkifAuth, function (req, res){
     }
 })
 
+//export for use in armok.ts, dumb js stuff needs it here not above
 export { router }
