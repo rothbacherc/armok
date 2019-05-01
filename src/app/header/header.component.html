@@ -23,7 +23,7 @@
                         <span class="caret"></span>
                     </a>
                     <a *ngIf="loginService.isLoggedIn()" class="dropdown-toggle" role="button" style="cursor: pointer">
-                        {{ loginService.getCurrentUser().uName }}
+                        {{ loginService.getCurrentUser().uName | shorten }}
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu" style="cursor: pointer">

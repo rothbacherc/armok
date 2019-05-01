@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, DoCheck, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Save } from 'src/app/models/save.model';
-import { File } from 'src/app/models/file.model';
+import { FileSave } from 'src/app/models/fileSave.model';
 import { LoginService } from 'src/app/services/login.service';
 import { UploadSaveService } from 'src/app/services/upload-save.service';
 import { TrendSavesService } from 'src/app/services/trend-saves.service';
@@ -16,7 +16,8 @@ import { Subscription } from 'rxjs';
 export class AnnouncementComponent implements OnInit, DoCheck, OnDestroy {
   @ViewChild('fileInput') fileInput: ElementRef
   uploadSave: Save
-  uploadFile: File
+  uploadFile: FileSave
+  indvFile: File
   newSave: FormGroup
   loggedIn: boolean
   selectedSave: Save
@@ -83,6 +84,10 @@ export class AnnouncementComponent implements OnInit, DoCheck, OnDestroy {
     this.selectedSaveBlood = this.selectServ.getBlood()
   }
 
+  onFileSelected(event){
+    this.indvFile = <File>event.target.files[0]
+  }
+
   //reactive form might not have functionality for file upload,
   //we might have to switch to template form for that
   onSubmit(){
@@ -118,12 +123,14 @@ export class AnnouncementComponent implements OnInit, DoCheck, OnDestroy {
         this.newSaveShare, this.newSave.controls.blood.value,
         'Anonymous')
     }
-    this.uploadFile = new File(this.newSave.controls.saveName.value, 
-      this.newSave.controls.save.value)
+    this.uploadFile = new FileSave(this.newSave.controls.saveName.value, 
+      this.indvFile) //this.newSave.controls.save.value) //this is from form, we'll try in a sec
     this.selectServ.setSelected(this.uploadSave)
     this.getSelect()
     this.openTab = 'selected'
-    this.addSave.addNewSave(this.uploadSave)
+    
+    console.log(this.uploadFile)
+    this.addSave.addNewSave(this.uploadSave, this.uploadFile)
     this.newSave.reset()
   }
 

@@ -17,6 +17,7 @@ import { AllSavesService } from './services/all-saves.service';
 import { BloodSaveService } from './services/blood-save.service';
 import { TrendSavesService } from './services/trend-saves.service';
 import { UploadSaveService } from './services/upload-save.service';
+import { ShortenPipe } from './services/shorten.pipe';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { UploadSaveService } from './services/upload-save.service';
     PersonalComponent,
     PublicTrendingComponent,
     PublicBloodlineComponent,
-    PublicAllComponent
+    PublicAllComponent,
+    ShortenPipe
   ],
   imports: [
     BrowserModule,

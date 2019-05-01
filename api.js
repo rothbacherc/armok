@@ -39,29 +39,31 @@ var express = require("express");
 var expressJwt = require("express-jwt");
 var fs = require("fs");
 var dataAccess_1 = require("./dataAccess");
+//build router and pull in the db
 var router = express.Router();
 exports.router = router;
 var data;
 data = new dataAccess_1.DataAccess();
 var mySecret = fs.readFileSync('secret', 'utf8');
+//this is an automated JWT checker to make
+//sure no one is impersonating anyone,
+//anonymous users may still connect
 var checkifAuth = expressJwt({
     secret: mySecret,
     credentialsRequired: false
-    // getToken: function fromHeader (req) {
-    //     if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
-    //         return req.headers.authorization.split(' ')[1];
-    //     }
-    // }
 });
+//prolly don't need this, i don't wanna remove it though
 router.use(function (req, res, next) {
     next();
 });
+//static file stuff
 router.get('/', function (req, res) {
     res.sendFile(__dirname, '/dist/armok/index.html');
 });
+//api magic, /api/register directs here
 router.put('/register', function (req, res) {
     var _this = this;
-    try {
+    try { //try/catch a promise to call the db for the insert
         var callAddUserPromise = function (req) { return __awaiter(_this, void 0, void 0, function () {
             var result;
             return __generator(this, function (_a) {
@@ -72,7 +74,7 @@ router.put('/register', function (req, res) {
                         return [2 /*return*/, result];
                 }
             });
-        }); };
+        }); }; //declaration above, call below
         callAddUserPromise(req).then(function (result) {
             res.status(200).json(result);
         })["catch"](function (reject) {
@@ -93,6 +95,7 @@ router.put('/register', function (req, res) {
     //     token: strToken
     // })
 });
+//this is where /api/login goes, very similar to above
 router.put('/login', function (req, res) {
     var _this = this;
     try {
@@ -123,6 +126,7 @@ router.put('/login', function (req, res) {
         res.status(500).json(null);
     }
 });
+//same same but /api/upload/save, used for new saves
 router.put('/upload/save', checkifAuth, function (req, res) {
     var _this = this;
     try {
@@ -152,4 +156,15 @@ router.put('/upload/save', checkifAuth, function (req, res) {
         console.log(e);
         res.status(500);
     }
+});
+router.put('/upload/file', function (req, res) {
+    console.log(req.body);
+    fs.writeFile("test.zip", req.body, function (err) {
+        if (err) {
+            throw err;
+        }
+        else {
+            res.status(200);
+        }
+    });
 });

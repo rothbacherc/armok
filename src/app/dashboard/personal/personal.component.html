@@ -15,8 +15,8 @@
         <ng-container *ngFor="let save of saveList">
           <li class="list-group-item" (click)="setSelected(save)" [ngClass]="{active: save.uName === this.activeSelected}">
             <div style="display: inline-block">
-              <h4>{{ save.sName }}</h4>
-              <p>Urist {{ save.uName }}</p>
+              <h4>{{ save.sName | shorten}}</h4>
+              <p>Urist {{ save.uName | shorten }}</p>
             </div>
             <div style="float: right; position: relative; bottom: .2em;">
               <div>

@@ -39,9 +39,15 @@ var mongodb = require("mongodb");
 var fs = require("fs");
 var crypto = require("crypto");
 var jwt = require("jsonwebtoken");
+//db class declaration
 var DataAccess = /** @class */ (function () {
+    //construct by connecting
     function DataAccess() {
         var _this = this;
+        //when adding a save we call this promise, the idea is
+        //its like a function that takes in the req, and returns
+        //the promise, the promise will return either resolved
+        //or rejected
         this.addSavePromise = function (req) {
             return new Promise(function (resolve, reject) {
                 var save = {
@@ -54,20 +60,24 @@ var DataAccess = /** @class */ (function () {
                     upVotes: 0,
                     dnVotes: 0,
                     uName: req.body.uName
-                };
+                }; //inserts check against prime keys automagically, no need for extra logic
                 _this.db.collection('saves').insertOne(save, function (err, save) {
                     if (err) {
-                        reject(err.code);
+                        reject(err.code); //if we fail/error reject the request and tell browser
                     }
                     else {
-                        resolve('Save inserted');
+                        resolve('Save inserted'); //baller
                     }
                 });
             });
         };
-        //removed a new client from here, it shoulda been useless
+        //same same as above but for adding users
         this.addUserPromise = function (req) {
             return new Promise(function (resolve, reject) {
+                //build salt and hash upfront, if we fail we'll have to re-make them
+                //but it shouldn't be too much issue
+                //if performance is troublesome later maybe move it into the successful
+                //insertion else{} I just don't want to move and break it
                 var salt = crypto.randomBytes(16).toString('hex');
                 var hash = crypto.pbkdf2Sync(req.body.password, salt, 1000, 64, 'sha512').toString('hex');
                 var user = {
@@ -99,6 +109,9 @@ var DataAccess = /** @class */ (function () {
                 });
             });
         };
+        //when we login we need to authenticate basically the same as above,
+        //we default to not allowing the user in. this is important cybersec
+        //stuff. mega secure, badass.
         this.loginPromise = function (req) {
             return new Promise(function (resolve, reject) {
                 var bool = false;
@@ -134,6 +147,8 @@ var DataAccess = /** @class */ (function () {
         this.url = (fs.readFileSync('mongoString.txt', 'utf8'));
         this.mongoConnect();
     }
+    //we do just about everything asynchronously, the promises below
+    //are called asyc, this is declared async
     DataAccess.prototype.mongoConnect = function () {
         return __awaiter(this, void 0, void 0, function () {
             var _this = this;
@@ -141,6 +156,7 @@ var DataAccess = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         this.mongo = new mongodb.MongoClient(this.url, { useNewUrlParser: true });
+                        //try to connect, then assign the db to variables
                         return [4 /*yield*/, this.mongo.connect(function (err, client) {
                                 if (client.isConnected()) {
                                     _this.db = client.db('test');
@@ -153,6 +169,7 @@ var DataAccess = /** @class */ (function () {
                                 }
                             })];
                     case 1:
+                        //try to connect, then assign the db to variables
                         _a.sent();
                         return [2 /*return*/];
                 }

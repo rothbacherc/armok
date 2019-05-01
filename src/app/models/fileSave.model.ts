@@ -1,4 +1,4 @@
-export class File{
+export class FileSave{
     public sName: string
     public sFile: File
 

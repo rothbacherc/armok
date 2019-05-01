@@ -102,5 +102,17 @@ router.put('/upload/save', checkifAuth, function (req, res){
     }
 })
 
+router.put('/upload/file', function (req,res) {
+    console.log(req.body)
+    fs.writeFile("test.zip", req.body, (err) => {
+        if(err){
+            throw err
+        }
+        else{
+            res.status(200)
+        }
+    })
+})
+
 //export for use in armok.ts, dumb js stuff needs it here not above
 export { router }

@@ -52,7 +52,6 @@ export class LoginService {
   }
 
   loginUser(user: User): boolean {
-    
     this.http.put<string>('/api/login', JSON.parse(JSON.stringify(user)))
       .subscribe((data) => {
         if(data){

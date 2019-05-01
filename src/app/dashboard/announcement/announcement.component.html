@@ -81,7 +81,7 @@
             <div>
               <div style="padding-bottom: 3%;">
                 <small>Uploaded by:</small>
-                <label style="padding-left: 2%;"for="user">{{ selectedSave.uName }}</label>
+                <label style="padding-left: 2%;"for="user">{{ selectedSave.uName | shorten}}</label>
               </div>
               <label for="description">{{ selectedSave.sName }}</label>
               <small style="display: block;" *ngIf="this.selectedSave.description" 
@@ -195,7 +195,10 @@
                     <input 
                     class="inputfile" 
                     type="file"
-                    formControlName="save">Choose a file
+                    formControlName="save"
+                    (change)="onFileSelected($event)"
+                    accept="application/x-zip-compressed"
+                    #fileUpload>Choose a file
                   </label>
                   <button class="btn btn-primary" style="margin-top: 20%; margin-left: 20%;" type="submit">Upload</button>
                 </div>
