@@ -32,7 +32,7 @@ export class UploadSaveService {
           let reqFile = new FormData()
           reqFile.append(save.sName, file.sFile)
           console.log(save.sName)
-          this.http.put<any>('/api/upload/file/' + save.sName, reqFile, { headers })
+          this.http.put<any>('/api/upload/file', reqFile, { headers })
             .subscribe((data) => {
               console.log(data)
             })
