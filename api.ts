@@ -1,13 +1,22 @@
 import * as express from 'express'
 import * as expressJwt from 'express-jwt'
 import * as fs from 'fs'
+import * as multer from 'multer'
+import * as mulGrid from 'multer-gridfs-storage'
+import * as mongo from 'mongodb'
 import { DataAccess } from './dataAccess'
 
 //build router and pull in the db
-let router = express.Router()
 let data: DataAccess
 data = new DataAccess()
+let router = express.Router()
 const mySecret = fs.readFileSync('secret', 'utf8')
+
+//multer that connects with gridFS, upload.single
+//is called on the route, then the upload uses the
+//storage engine declared in dataAccess
+const storage = data.storage 
+let upload = multer({ storage })
 
 //this is an automated JWT checker to make
 //sure no one is impersonating anyone,
@@ -102,16 +111,11 @@ router.put('/upload/save', checkifAuth, function (req, res){
     }
 })
 
-router.put('/upload/file', function (req,res) {
-    console.log(req.body)
-    fs.writeFile("test.zip", req.body, (err) => {
-        if(err){
-            throw err
-        }
-        else{
-            res.status(200)
-        }
-    })
+router.put('/upload/file/:saveName', upload.any(), function (req,res) {
+    console.log(req.params.saveName)
+    console.log(req.files[0])
+    res.json(req.files[0].uploadDate)
+    res.status(200)
 })
 
 //export for use in armok.ts, dumb js stuff needs it here not above

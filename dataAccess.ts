@@ -2,6 +2,9 @@ import * as mongodb from 'mongodb'
 import * as fs from 'fs'
 import * as crypto from 'crypto'
 import * as jwt from 'jsonwebtoken'
+import * as multer from 'multer'
+import * as mulGrid from 'multer-gridfs-storage'
+import { mongo } from 'mongoose';
 
 //similar model to the one we use in the front
 //end but a little different to include the hash/salt
@@ -35,11 +38,28 @@ export class DataAccess {
     mongo: mongodb.MongoClient
     client: mongodb.MongoClient
     db: mongodb.Db
-    url: string
+    url = (fs.readFileSync('mongoString.txt', 'utf8'))
+
+    //this is the storage engine for the files that are uploaded,
+    //it uses its own little connection because it's a dirty slut
+    //hopefully it closes it automatically because i can't manually
+    //do it and it gives me axiety
+    storage = new mulGrid({
+        db: mongodb.MongoClient
+        .connect(this.url, {useNewUrlParser: true})
+        .then(client => client.db('test')),
+        file: (req, file)=> {
+            return {
+                filename: file.fieldname,
+                bucketName: 'files'
+            }
+        }
+    })
+
+    //upload
 
     //construct by connecting
     constructor() {
-        this.url = (fs.readFileSync('mongoString.txt', 'utf8'))
         this.mongoConnect()
     }
 

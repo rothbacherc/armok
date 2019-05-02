@@ -28,6 +28,14 @@ export class UploadSaveService {
             this.mySaves.addSave(save)
             this.allSaves.addSave(save)
           }
+          let headers = new HttpHeaders() //{headers: new HttpHeaders().set('Content-Type', 'multipart/form-data')}
+          let reqFile = new FormData()
+          reqFile.append(save.sName, file.sFile)
+          console.log(save.sName)
+          this.http.put<any>('/api/upload/file/' + save.sName, reqFile, { headers })
+            .subscribe((data) => {
+              console.log(data)
+            })
           return true
         }
         else{
@@ -36,13 +44,6 @@ export class UploadSaveService {
       })
     
     
-    let headers = new HttpHeaders
-    let reqFile = new FormData()
-    reqFile.append('sFile', file.sFile)
-    console.log(file.sFile)
-    this.http.put<any>('/api/upload/file', file.sFile)
-      .subscribe((data) => {
-        console.log(data)
-      })
+
   }
 }

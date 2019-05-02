@@ -38,13 +38,19 @@ exports.__esModule = true;
 var express = require("express");
 var expressJwt = require("express-jwt");
 var fs = require("fs");
+var multer = require("multer");
 var dataAccess_1 = require("./dataAccess");
 //build router and pull in the db
-var router = express.Router();
-exports.router = router;
 var data;
 data = new dataAccess_1.DataAccess();
+var router = express.Router();
+exports.router = router;
 var mySecret = fs.readFileSync('secret', 'utf8');
+//multer that connects with gridFS, upload.single
+//is called on the route, then the upload uses the
+//storage engine declared in dataAccess
+var storage = data.storage;
+var upload = multer({ storage: storage });
 //this is an automated JWT checker to make
 //sure no one is impersonating anyone,
 //anonymous users may still connect
@@ -157,14 +163,9 @@ router.put('/upload/save', checkifAuth, function (req, res) {
         res.status(500);
     }
 });
-router.put('/upload/file', function (req, res) {
-    console.log(req.body);
-    fs.writeFile("test.zip", req.body, function (err) {
-        if (err) {
-            throw err;
-        }
-        else {
-            res.status(200);
-        }
-    });
+router.put('/upload/file/:saveName', upload.any(), function (req, res) {
+    console.log(req.params.saveName);
+    console.log(req.files[0]);
+    res.json(req.files[0].uploadDate);
+    res.status(200);
 });

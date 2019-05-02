@@ -39,11 +39,29 @@ var mongodb = require("mongodb");
 var fs = require("fs");
 var crypto = require("crypto");
 var jwt = require("jsonwebtoken");
+var mulGrid = require("multer-gridfs-storage");
 //db class declaration
 var DataAccess = /** @class */ (function () {
+    //upload
     //construct by connecting
     function DataAccess() {
         var _this = this;
+        this.url = (fs.readFileSync('mongoString.txt', 'utf8'));
+        //this is the storage engine for the files that are uploaded,
+        //it uses its own little connection because it's a dirty slut
+        //hopefully it closes it automatically because i can't manually
+        //do it and it gives me axiety
+        this.storage = new mulGrid({
+            db: mongodb.MongoClient
+                .connect(this.url, { useNewUrlParser: true })
+                .then(function (client) { return client.db('test'); }),
+            file: function (req, file) {
+                return {
+                    filename: file.fieldname,
+                    bucketName: 'files'
+                };
+            }
+        });
         //when adding a save we call this promise, the idea is
         //its like a function that takes in the req, and returns
         //the promise, the promise will return either resolved
@@ -144,7 +162,6 @@ var DataAccess = /** @class */ (function () {
                 });
             });
         };
-        this.url = (fs.readFileSync('mongoString.txt', 'utf8'));
         this.mongoConnect();
     }
     //we do just about everything asynchronously, the promises below
