@@ -34,6 +34,7 @@ export class AnnouncementComponent implements OnInit, DoCheck, OnDestroy {
   listVisibility: string[] = ['Public', 'Private']
   listTypes: string[] = ['Seed', 'World', 'Fort', 'Character']
   sub: Subscription
+  hideTopWell: boolean = false
 
   constructor(private loginService: LoginService, private addSave: UploadSaveService, 
     private trendServ: TrendSavesService, private selectServ: SelectSaveService) {
@@ -64,6 +65,10 @@ export class AnnouncementComponent implements OnInit, DoCheck, OnDestroy {
 
   chooseTab(tab: string){
     this.openTab = tab
+  }
+
+  hideWell(){
+    this.hideTopWell = !this.hideTopWell
   }
 
   //this is temp proof of concept!

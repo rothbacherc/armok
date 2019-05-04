@@ -22,15 +22,15 @@ export interface User {
 
 //clone of front end model
 export interface Save {
-    sName: string
-    type: number
-    description: string
-    isPrivate: boolean
-    isBlood: boolean
-    downloads: number
-    upVotes: number
-    dnVotes: number
-    uName: string
+    sName: string,
+    type: number,
+    description: string,
+    isPrivate: boolean,
+    isBlood: boolean,
+    downloads: number,
+    upVotes: number,
+    dnVotes: number,
+    uName: string,
 }
 
 //db class declaration

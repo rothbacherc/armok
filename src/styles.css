@@ -183,7 +183,7 @@ body{
 .well{
     background-color: #323c42;
     border-color: #2b3438;
-    max-height: calc(90vh - 140px);
+    max-height: calc(90vh - 110px);
     scrollbar-width: thin;
     overflow: auto;
 }
@@ -347,4 +347,8 @@ input[type="checkbox"]{
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
+}
+
+.hidden{
+    display: none;
 }

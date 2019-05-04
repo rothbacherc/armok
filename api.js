@@ -163,9 +163,7 @@ router.put('/upload/save', checkifAuth, function (req, res) {
         res.status(500);
     }
 });
-router.put('/upload/file/:saveName', upload.any(), function (req, res) {
-    console.log(req.params.saveName);
-    console.log(req.files[0]);
+router.put('/upload/file/', upload.any(), function (req, res) {
     res.json(req.files[0].uploadDate);
     res.status(200);
 });

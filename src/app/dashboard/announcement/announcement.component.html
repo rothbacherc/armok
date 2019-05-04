@@ -5,17 +5,19 @@
       <li [ngClass]="{active: openTab === 'feat'}"><a (click)="chooseTab('feat')">Featured Save</a></li>
       <li [ngClass]="{active: openTab === 'selected'}"><a (click)="chooseTab('selected')">Selected Save</a></li>
       <li [ngClass]="{active: openTab === 'upload'}"><a (click)="chooseTab('upload')">Upload</a></li>
+      <li class="pull-right material-icons"><a (click)="hideWell()" 
+        style="padding-top: 3px; padding-bottom: 2px; padding-left: 8px; padding-right: 10px"><i>remove</i></a></li>
     </ul>
-    <div id="announce" *ngSwitchDefault>
-      <div class="well" style="border: none; background-color: #374852;">
+    <div id="announce" *ngSwitchDefault [ngClass]="{hidden : hideTopWell}">
+      <div class="well" style="border: none; background-color: #374852; margin-bottom: 0;">
         <p>
           At the moment we aren't hooked up to any database. Any testing is just to give
           the front end a bit of a once over. Data will be wiped on server reset.
         </p>
       </div>
     </div>
-    <div id="feat" *ngSwitchCase="'feat'">
-      <div class="well" style="border: none; background-color: #374852;">
+    <div id="feat" *ngSwitchCase="'feat'" [ngClass]="{hidden : hideTopWell}">
+      <div class="well" style="border: none; background-color: #374852; margin-bottom: 0;">
         <div class="row">
           <div class="col-md-1">
 
@@ -71,8 +73,8 @@
         </div>
       </div>
     </div>
-    <div id="selected" *ngSwitchCase="'selected'">
-      <div class="well" style="border: none; background-color: #374852;">
+    <div id="selected" *ngSwitchCase="'selected'" [ngClass]="{hidden : hideTopWell}">
+      <div class="well" style="border: none; background-color: #374852; margin-bottom: 0;">
         <div class="row">
           <div class="col-md-1">
 
@@ -131,7 +133,7 @@
       </div>
     </div>
     <div id="upload" *ngSwitchCase="'upload'">
-      <div class="well" style="border: none; background-color: #374852;">
+      <div class="well" style="border: none; background-color: #374852; margin-bottom: 0;">
 
         <form [formGroup]="newSave" (ngSubmit)="onSubmit()">
           <div class="row">
