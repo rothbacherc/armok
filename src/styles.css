@@ -152,7 +152,7 @@ body{
 
 .nav-tabs > li > a:hover{
     background-color: #242b30;
-    border-color: #242b30;
+    border-color: #283035;
 }
 
 .nav-tabs > li > a{
@@ -178,6 +178,10 @@ body{
     background-color: #1f2529;
     border-color: #283035;
     color: #e6fcff;
+}
+
+.normPoint{
+    cursor: default;
 }
 
 .well{

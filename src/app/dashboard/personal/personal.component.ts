@@ -8,7 +8,7 @@ import { LoginService } from 'src/app/services/login.service';
 /*I had a big oopsie from the start where I tried to use a Map<string, Save[]>
 to hold the save lists, I don't know why. Save[][] is a lot easier and actually
 required to make the savelists expandable.  There might be artifacts of that 
-initial workaround if there are remaining maps in the personal/public components*/ 
+initial workaround if there are remaining maps in the personal/public components*/
 
 @Component({
   selector: 'app-personal',
@@ -17,52 +17,60 @@ initial workaround if there are remaining maps in the personal/public components
 })
 export class PersonalComponent implements OnInit, DoCheck, OnDestroy {
   mySaves: Save[][]
+  saveList: Save[]
+  showThings: boolean = false
+  currentType: string
   typeNames: string[] = ['Seeds', 'Worlds', 'Forts', 'Characters']
   mapCollapse: boolean[] = [true, true, true, true]
-  mapbgStyles: string[] = ['','','','']
-  mapcStyles: string[] = ['','','','']
-  mapcsStyles: string[] = ['','','','']
+  mapcsStyles: string[] = ['', '', '', '']
   mapStates: Map<string, string> = new Map([
     ['Seeds', 'closed'], ['Worlds', 'closed'], ['Forts', 'closed'], ['Characters', 'closed']
   ])
-  static ebgS = '#2c2d2e' //empty background style
-  static ecS = '#4f5052' //empty color style
-  static cS = 'auto' //cursor style
+  static cS = 'context-menu' //cursor style
   activeSelected: string = ''
   sub: Subscription
 
-  constructor(private mySaveService: MySavesService, private selectService: SelectSaveService, 
+  constructor(private mySaveService: MySavesService, private selectService: SelectSaveService,
     private loginService: LoginService) {
     this.sub = loginService.logoutCall$.subscribe(
       () => {
-        this.mySaves = [[],[],[],[]]
+        this.mySaves = [[], [], [], []]
       }
     )
-   }
+  }
 
   ngOnInit() {
     this.mySaves = this.mySaveService.getAllMySaves()
+    this.saveList
   }
 
   ngDoCheck() {
-    this.hideIfEmpty(0);this.hideIfEmpty(1);this.hideIfEmpty(2);this.hideIfEmpty(3)
+    this.hideIfEmpty(0); this.hideIfEmpty(1); this.hideIfEmpty(2); this.hideIfEmpty(3)
+  }
+
+  setSaveList(index: number) {
+    if (this.mySaves[index].length > 0) {
+      this.showThings = true
+      this.currentType = this.typeNames[index]
+      console.log(this.currentType)
+      this.saveList = this.mySaves[index]
+    }
   }
 
   hideIfEmpty(key: number) {
-        this.mapbgStyles[key] = this.mySaves[key].length === 0 ? PersonalComponent.ebgS : ''
-        this.mapcStyles[key] = this.mySaves[key].length === 0 ? PersonalComponent.ecS : ''
-        this.mapcsStyles[key] = this.mySaves[key].length === 0 ? PersonalComponent.cS : ''
+    this.mapcsStyles[key] = this.mySaves[key].length === 0 ? PersonalComponent.cS : ''
   }
 
   toggleCollapse(elem: number) {
     this.mapCollapse[elem] = this.mySaves[elem].length > 0 ? !this.mapCollapse[elem] : this.mapCollapse[elem]
   }
-  setSelected(save: Save){
+
+  setSelected(save: Save) {
     this.activeSelected = save.uName
     this.selectService.setSelected(save)
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.sub.unsubscribe()
   }
 }

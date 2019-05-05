@@ -1,47 +1,47 @@
 <div class="well">
   <h4 style="text-align: center">Personal Saves</h4>
-  <div class="panel-group">
-    <div class="panel panel-default" *ngFor="let saveList of mySaves; let i = index">
-      <div class="panel-heading" (click)="toggleCollapse(i)" [ngStyle]="{
+  <ul class="nav nav-tabs">
+    <li *ngFor="let type of typeNames; let i = index"
+      [ngClass]="{active: type == currentType, disabled: mySaves[i].length === 0}">
+      <a (click)="setSaveList(i)" [ngStyle]="{'cursor': this.mapcsStyles[i]}"
+      >{{ type }}</a></li>
+    <!--<div class="panel-heading" (click)="toggleCollapse(i)" [ngStyle]="{
                                                                   'background-color': this.mapbgStyles[i],
                                                                   'color': this.mapcStyles[i],
-                                                                  'cursor': this.mapcsStyles[i]}">
-      <h4 class="panel-title">
-        {{ typeNames[i] }}
-      </h4>
-    </div>
-    <div id="seeds" class="panel-collapse" [ngClass]="{collapse: this.mapCollapse[i] === true}">
-      <ul class="list-group">
-        <ng-container *ngFor="let save of saveList">
-          <li class="list-group-item" (click)="setSelected(save)" [ngClass]="{active: save.uName === this.activeSelected}">
+                                                                  'cursor': this.mapcsStyles[i]}"> -->
+
+  </ul>
+
+  <ul class="list-group" *ngIf="showThings">
+    <ng-container *ngFor="let save of saveList">
+      <li class="list-group-item" (click)="setSelected(save)" [ngClass]="{active: save.uName === this.activeSelected}">
+        <div style="display: inline-block">
+          <h4>{{ save.sName | shorten}}</h4>
+          <p>Urist {{ save.uName | shorten }}</p>
+        </div>
+        <div style="float: right; position: relative; bottom: .2em;">
+          <div>
             <div style="display: inline-block">
-              <h4>{{ save.sName | shorten}}</h4>
-              <p>Urist {{ save.uName | shorten }}</p>
+              <i class="material-icons" style="position: relative; padding-left: .5em; top: .2em;">publish</i>
             </div>
-            <div style="float: right; position: relative; bottom: .2em;">
-              <div>
-                <div style="display: inline-block">
-                  <i class="material-icons" style="position: relative; padding-left: .5em; top: .2em;">publish</i>
-                </div>
-                <div style="display: inline-block; padding-left: 1.6em">
-                  <p style="display: inline-block; font-size: 1.4em;">{{ save.downloads }}</p>
-                  <i class="material-icons" style="position: relative; padding-left: .5em; top: .25em;">get_app</i>
-                </div>
-              </div>
-              <div>
-                <div style="display:inline-block">
-                  <p style="display: inline-block; font-size: 1.4em">{{ save.upVotes }}</p>
-                  <i class="material-icons" style="position: relative; padding-left: .5em; top: .2em;">thumb_up_alt</i>
-                </div>
-                <div style="display:inline-block; padding-left: .9em">
-                  <p style="display: inline-block; font-size: 1.4em">{{ save.dnVotes }}</p>
-                  <i class="material-icons" style="position: relative; padding-left: .5em; top: .1em;">thumb_down_alt</i>
-                </div>
-              </div>
+            <div style="display: inline-block; padding-left: 1.6em">
+              <p style="display: inline-block; font-size: 1.4em;">{{ save.downloads }}</p>
+              <i class="material-icons" style="position: relative; padding-left: .5em; top: .25em;">get_app</i>
             </div>
-          </li>
-        </ng-container>
-      </ul>
-    </div>
-  </div>
+          </div>
+          <div>
+            <div style="display:inline-block">
+              <p style="display: inline-block; font-size: 1.4em">{{ save.upVotes }}</p>
+              <i class="material-icons" style="position: relative; padding-left: .5em; top: .2em;">thumb_up_alt</i>
+            </div>
+            <div style="display:inline-block; padding-left: .9em">
+              <p style="display: inline-block; font-size: 1.4em">{{ save.dnVotes }}</p>
+              <i class="material-icons" style="position: relative; padding-left: .5em; top: .1em;">thumb_down_alt</i>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ng-container>
+  </ul>
+
 </div>
