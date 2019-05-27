@@ -1,0 +1,14 @@
+<div class="well">
+  <h4 style="text-align: center">Public Saves</h4>
+  <ul class="nav nav-tabs">
+    <li *ngFor="let type of typeNames; let i = index" [ngClass]="{active: type == currentType}">
+      <a (click)="setSaveList(i)">{{ type }}</a></li>
+  </ul>
+  <div [ngSwitch]="openComponent">
+    <ng-container *ngSwitchDefault>
+      <app-public-all [saveType]='currentIndex'></app-public-all>
+    </ng-container>
+    
+  </div>
+
+</div>

@@ -17,7 +17,7 @@ var App = /** @class */ (function () {
         this.app.use(express.static(__dirname + '/dist/armok'));
         var httpServer = http.createServer(this.app);
         httpServer.listen(8080, function () {
-            console.log('HTTP Server running on port 8080');
+            console.log('HTTP Server is totally running on port 8080');
         });
     }
     return App;

@@ -22,7 +22,7 @@ export class App {
         const httpServer = http.createServer(this.app)
 
         httpServer.listen(8080, () => {
-            console.log('HTTP Server running on port 8080')
+            console.log('HTTP Server is totally running on port 8080')
         })
     }
 }

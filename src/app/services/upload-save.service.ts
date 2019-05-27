@@ -28,7 +28,7 @@ export class UploadSaveService {
             this.mySaves.addSave(save)
             this.allSaves.addSave(save)
           }
-          let headers = new HttpHeaders() //{headers: new HttpHeaders().set('Content-Type', 'multipart/form-data')}
+          let headers = new HttpHeaders()
           let reqFile = new FormData()
           reqFile.append(save.sName, file.sFile)
           console.log(save.sName)

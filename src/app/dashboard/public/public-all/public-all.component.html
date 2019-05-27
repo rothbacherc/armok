@@ -1,13 +1,4 @@
-<div class="well">
-  <h4 style="text-align: center">Personal Saves</h4>
-  <ul class="nav nav-tabs">
-    <li *ngFor="let type of typeNames; let i = index"
-      [ngClass]="{active: type == currentType, disabled: mySaves[i].length === 0}">
-      <a (click)="setSaveList(i)" [ngStyle]="{'cursor': this.mapcsStyles[i]}"
-      >{{ type }}</a></li>
-  </ul>
-
-  <ul class="list-group" *ngIf="showThings">
+<ul class="list-group">
     <ng-container *ngFor="let save of saveList">
       <li class="list-group-item" (click)="setSelected(save)" [ngClass]="{active: save.uName === this.activeSelected}">
         <div style="display: inline-block">
@@ -38,5 +29,3 @@
       </li>
     </ng-container>
   </ul>
-
-</div>
